@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SimpleCqrs.Common.Application\SimpleCqrs.Common.Application.csproj" />
+      <ProjectReference Include="..\SimpleCqrs.Domain\SimpleCqrs.Domain.csproj" />
+    </ItemGroup>
+
+</Project>
