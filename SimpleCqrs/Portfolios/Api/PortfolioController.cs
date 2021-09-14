@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SimpleCqrs.Common.Application;
-using SimpleCqrs.Portfolios.Application;
+using SimpleCqrs.Common.Application.Messaging;
+using SimpleCqrs.Portfolios.Domain.Commands;
 
 namespace SimpleCqrs.Portfolios.Api
 {
@@ -13,29 +13,41 @@ namespace SimpleCqrs.Portfolios.Api
 
         public PortfolioController(ICommandBus bus) => _bus = bus;
 
-        [HttpPost]
+        /// <summary>
+        ///     Open a new portfolio.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("open")]
         public async Task<ActionResult> Open(OpenPortfolioDto dto)
         {
             await _bus.Send(new OpenPortfolio(dto.Name));
             return Accepted();
         }
 
+        /// <summary>
+        ///     Close an existing portfolio.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPut("{id}/close")]
         public async Task<ActionResult> Close(string id)
         {
-            await _bus.Send(new ClosePortfolio());
+            await _bus.Send(new ClosePortfolio(id));
             return Accepted();
         }
 
+        /// <summary>
+        ///     Sell or buy shares of a portfolio.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPut("{id}/place-order")]
         public async Task<ActionResult> PlaceOrder(string id, PlaceOrderDto dto)
         {
-            await _bus.Send(new PlaceOrder());
+            await _bus.Send(new PlaceOrder(id, dto.Details));
             return Accepted();
         }
     }
-
-    public record OpenPortfolioDto(string Name);
-
-    public record PlaceOrderDto;
 }

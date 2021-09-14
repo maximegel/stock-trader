@@ -1,17 +1,18 @@
-using AutoMapper;
+using System.Text.Json.Serialization;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using SimpleCqrs.Common.Application;
-using SimpleCqrs.Common.Persistence;
+using SimpleCqrs.Common.Application.Messaging;
+using SimpleCqrs.Common.Application.Persistence;
+using SimpleCqrs.Common.Infrastructure.Messaging.MediatR;
 using SimpleCqrs.Portfolios.Domain;
 using SimpleCqrs.Portfolios.Persistence;
-using SimpleCqrs.Portfolios.Persistence.DataModels;
 
 namespace SimpleCqrs
 {
@@ -19,30 +20,38 @@ namespace SimpleCqrs
     {
         public Startup(IConfiguration configuration) => Configuration = configuration;
 
-        private IConfiguration Configuration { get; }
         private static string Version => "v1";
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Persistence:
-            services.AddDbContext<PortfolioDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<IWriteOnlyRepository<Portfolio>>(provider =>
-                new WriteOnlyMappingRepository<Portfolio, PortfolioData>(
-                    new DbWriteOnlyRepository<PortfolioData>(provider.GetRequiredService<PortfolioDbContext>()),
-                    provider.GetRequiredService<IMapper>()));
-
             // Application:
+            
             services.AddAutoMapper(typeof(Startup));
             services.AddMediatR(typeof(Startup));
-            services.AddScoped<ICommandBus, InMemoryCommandBus>();
-
+            services.AddScoped<ICommandBus, MediatorCommandBus>();
+            
+            // Infrastructure:
+            
+            services.AddScoped<IRepository<IPortfolio>, PortfolioDbRepository>();
+            
+            services.AddDbContext<PortfolioDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            
             // Api:
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+            
+            services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                });
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc(Version, new OpenApiInfo {Title = "SimpleCqrs.Api", Version = Version});
+                options.CustomOperationIds(dsc => ((ControllerActionDescriptor)dsc.ActionDescriptor).ActionName);
+                options.SwaggerDoc(Version, new OpenApiInfo {Title = "SimpleCqrs.Api", Version = Version});
             });
         }
 
@@ -53,7 +62,8 @@ namespace SimpleCqrs
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", $"SimpleCqrs.Api {Version}"));
+                app.UseSwaggerUI(options => 
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", $"SimpleCqrs.Api {Version}"));
             }
 
             app.UseHttpsRedirection();

@@ -2,23 +2,34 @@
 
 namespace SimpleCqrs.Common.Domain
 {
-    public abstract class Entity<TId> : IEntity
+    public abstract class Entity<TId> : Entity, IEntity<TId>
         where TId : Identifier
     {
-        protected Entity(TId id) => Id = id ?? throw new ArgumentNullException(nameof(id));
-
+        protected Entity(TId id) =>
+            Id = id ?? throw new ArgumentNullException(nameof(id));
+        
         public TId Id { get; }
+        
+        protected override Identifier GetId() => Id;
+    }
+    
+    public abstract class Entity : IEntity, IEquatable<IEntity>
+    {
+        Identifier IEntity.GetId() => GetId();
 
-        Identifier IEntity.Id => Id;
+        public bool Equals(IEntity? other) =>
+            GetId().Equals(other?.GetId());
 
-        public static bool operator ==(Entity<TId> left, Entity<TId> right) => Equals(left, right);
+        public static bool operator ==(Entity? left, Entity? right) => Equals(left, right);
 
-        public static bool operator !=(Entity<TId> left, Entity<TId> right) => !(left == right);
+        public static bool operator !=(Entity? left, Entity? right) => !(left == right);
 
         public override bool Equals(object? obj) =>
             ReferenceEquals(this, obj) ||
-            obj is not null && GetType() == obj.GetType() && Id.Equals((obj as IEntity)?.Id);
+            obj is not null && GetType() == obj.GetType() && Equals(obj as IEntity);
 
-        public override int GetHashCode() => unchecked((13 * GetType().GetHashCode()) ^ Id.GetHashCode());
+        public override int GetHashCode() => unchecked((13 * GetType().GetHashCode()) ^ GetId().GetHashCode());
+
+        protected abstract Identifier GetId();
     }
 }

@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SimpleCqrs.Common.Domain
 {
     public abstract class ValueObject
     {
-        public static bool operator ==(ValueObject left, ValueObject right) => Equals(left, right);
+        public static bool operator ==(ValueObject? left, ValueObject? right) => Equals(left, right);
 
-        public static bool operator !=(ValueObject left, ValueObject right) => !(left == right);
+        public static bool operator !=(ValueObject? left, ValueObject? right) => !(left == right);
 
         public override bool Equals(object? obj) =>
             ReferenceEquals(this, obj) ||
