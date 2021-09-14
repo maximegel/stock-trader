@@ -1,4 +1,6 @@
-# Simple CQRS
+# Stock Trader
+
+Simple CQRS implementation of a stock trading application.
 
 ## References
 
