@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\StockTrader.Portfolios.Persistence\StockTrader.Portfolios.Persistence.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AppSettingsFiles Include="appsettings.*.json" />
+    </ItemGroup>
+    <Target Name="CopyAppSettingsFiles" AfterTargets="AfterBuild">
+        <Copy SourceFiles="@(AppSettingsFiles)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="@(AppSettingsFiles)" DestinationFolder="../StockTrader.Api" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="@(AppSettingsFiles)" 
+              DestinationFolder="../StockTrader.Api/bin/$(Configuration)/$(TargetFramework)" 
+              SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>
