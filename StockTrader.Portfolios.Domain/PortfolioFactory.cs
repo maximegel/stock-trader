@@ -6,7 +6,7 @@ namespace StockTrader.Portfolios.Domain
 {
     public static class PortfolioFactory
     {
-        public static IPortfolio Load(Identifier id) =>
+        public static IPortfolio Load(IIdentifier id) =>
             new Portfolio((PortfolioId) id);
 
         public static IPortfolio Open(OpenPortfolio command)

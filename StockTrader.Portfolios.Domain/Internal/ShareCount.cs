@@ -5,7 +5,7 @@ using StockTrader.Shared.Domain;
 
 namespace StockTrader.Portfolios.Domain.Internal
 {
-    internal sealed class ShareCount : ValueObject
+    internal sealed class ShareCount : ValueObject<ShareCount>
     {
         public ShareCount(int count, Symbol symbol)
         {

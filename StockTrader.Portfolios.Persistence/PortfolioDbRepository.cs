@@ -19,7 +19,7 @@ namespace StockTrader.Portfolios.Persistence
         public PortfolioDbRepository(PortfolioDbContext context) =>
             _context = context;
 
-        public async Task<IPortfolio?> Find(Identifier id, CancellationToken cancellationToken = default)
+        public async Task<IPortfolio?> Find(IIdentifier id, CancellationToken cancellationToken = default)
         {
             var data = await _context.Portfolios
                 .Include(p => p.Holdings)

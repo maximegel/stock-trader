@@ -1,25 +1,16 @@
-﻿using System;
-
-namespace StockTrader.Shared.Domain
+﻿namespace StockTrader.Shared.Domain
 {
-    public abstract class Identifier : UnaryValueObject<string>
+    public abstract class Identifier<TSelf, TValue> : UnaryValueObject<TSelf, TValue>,
+        IIdentifier
+        where TSelf : Identifier<TSelf, TValue>
     {
-        public static implicit operator Identifier(Guid value) =>
-            new Uuid(value);
+        protected Identifier(TValue value) : 
+            base(value) { }
         
-        public static implicit operator Identifier(int value) =>
-            new Uid(value);
+        public static implicit operator string(Identifier<TSelf, TValue> self) =>
+            self.ToString();
         
-        public static implicit operator Identifier(long value) =>
-            new Uid(value);
-        
-        public static implicit operator string(Identifier self) =>
-            self.GetValue();
-
-        public static explicit operator Guid(Identifier self) =>
-            Guid.Parse(self.GetValue());
-
-        public static explicit operator long(Identifier self) =>
-            long.Parse(self.GetValue());
+        public static explicit operator TValue(Identifier<TSelf, TValue> self) =>
+            self.Value;
     }
 }

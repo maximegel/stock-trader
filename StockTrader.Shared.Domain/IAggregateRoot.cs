@@ -5,5 +5,5 @@
     public interface IAggregateRoot<out TId> : 
         IAggregateRoot, 
         IEntity<TId> 
-        where TId : Identifier { }
+        where TId : IIdentifier { }
 }

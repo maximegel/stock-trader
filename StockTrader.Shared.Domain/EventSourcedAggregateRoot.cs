@@ -4,9 +4,9 @@ using System.Linq;
 namespace StockTrader.Shared.Domain
 {
     public abstract class EventSourcedAggregateRoot<TId, TEvent> : AggregateRoot<TId>,
-        IEventSourced<TEvent>,
-        IEventAggregation<TEvent>
-        where TId : Identifier
+        IEventSourced,
+        IEventAggregation
+        where TId : IIdentifier
         where TEvent : IDomainEvent
     {
         private readonly EventSource<TEvent> _uncommittedEvents = new();

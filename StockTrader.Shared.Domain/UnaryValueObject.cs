@@ -2,17 +2,21 @@
 
 namespace StockTrader.Shared.Domain
 {
-    public abstract class UnaryValueObject<T> : ValueObject
+    public abstract class UnaryValueObject<TSelf, TValue> : ValueObject<TSelf> 
+        where TSelf : UnaryValueObject<TSelf, TValue>
     {
-        public override string ToString() => GetValue()?.ToString() ?? "";
+        protected UnaryValueObject(TValue value) => 
+            Value = value;
+        
+        protected TValue Value { get; init; }
+        
+        public override string ToString() => 
+            Value?.ToString() ?? "";
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            var value = GetValue();
-            if (value is not null) 
-                yield return value;
+            if (Value is not null) 
+                yield return Value;
         }
-
-        protected abstract T GetValue();
     }
 }

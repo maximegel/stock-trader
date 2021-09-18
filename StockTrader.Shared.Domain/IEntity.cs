@@ -2,12 +2,12 @@
 {
     public interface IEntity
     {
-        Identifier GetId();
+        IIdentifier Id { get; }
     }
 
     public interface IEntity<out TId> : IEntity
-        where TId : Identifier
+        where TId : IIdentifier
     {
-        TId Id { get; }
+        new TId Id { get; }
     }
 }
