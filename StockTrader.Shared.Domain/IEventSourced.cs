@@ -1,8 +1,9 @@
 ﻿namespace StockTrader.Shared.Domain
 {
-    public interface IEventSourced<out TEvent>
-        where TEvent : IDomainEvent
+    public interface IEventSourced
     {
-        IEventSource<TEvent> UncommittedEvents { get; }
+        IEventSource UncommittedEvents { get; }
+
+        IEventSourced ClearUncommittedEvents();
     }
 }

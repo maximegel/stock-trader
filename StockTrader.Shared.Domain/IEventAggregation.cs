@@ -3,15 +3,14 @@ using System.Linq;
 
 namespace StockTrader.Shared.Domain
 {
-    public interface IEventAggregation<in TEvent>
-        where TEvent : IDomainEvent
+    public interface IEventAggregation
     {
-        IEventAggregation<TEvent> Apply(TEvent domainEvent);
+        IEventAggregation Apply(IDomainEvent domainEvent);
 
-        IEventAggregation<TEvent> Apply(params TEvent[] domainEvents) =>
+        IEventAggregation Apply(params IDomainEvent[] domainEvents) =>
             Apply(domainEvents.AsEnumerable());
             
-        IEventAggregation<TEvent> Apply(IEnumerable<TEvent> domainEvents) =>
+        IEventAggregation Apply(IEnumerable<IDomainEvent> domainEvents) =>
             domainEvents.Aggregate(this, (self, e) => self.Apply(e));
     }
 }

@@ -7,28 +7,33 @@ namespace StockTrader.Shared.Domain
     public class EventSource<TEvent> : IEventSource<TEvent>
         where TEvent : IDomainEvent
     {
-        private readonly List<TEvent> _events;
+        private readonly IAggregateRoot _aggregate;
+        private readonly IEnumerable<TEvent> _events;
         
-        public EventSource() : this(Enumerable.Empty<TEvent>())
-        {
-        }
+        public EventSource(IAggregateRoot aggregate) : 
+            this(aggregate, Enumerable.Empty<TEvent>()) { }
 
-        private EventSource(IEnumerable<TEvent> events)
+        private EventSource(IAggregateRoot aggregate, IEnumerable<TEvent> events)
         {
+            _aggregate = aggregate;
             _events = events.ToList();
         }
-        
-        public void Append(params TEvent[] domainEvents) =>
-            _events.AddRange(domainEvents);
 
-        public void Append(IEnumerable<TEvent> domainEvents) =>
-            _events.AddRange(domainEvents);
-        
-        public void MarkAsCommitted() => 
-            _events.Clear();
-        
-        public IEnumerator<TEvent> GetEnumerator() => _events.GetEnumerator();
+        IAggregateRoot IEventSource.Aggregate => _aggregate;
 
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) _events).GetEnumerator();
+        public EventSource<TEvent> Append(params TEvent[] domainEvents) =>
+            Append(domainEvents.AsEnumerable());
+
+        public EventSource<TEvent> Append(IEnumerable<TEvent> domainEvents) =>
+            new(_aggregate, _events.Concat(domainEvents));
+
+        public EventSource<TEvent> Clear() =>
+            new(_aggregate);
+
+        IEnumerator<TEvent> IEnumerable<TEvent>.GetEnumerator() => 
+            _events.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => 
+            ((IEnumerable) _events).GetEnumerator();
     }
 }

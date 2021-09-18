@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,7 +53,6 @@ namespace StockTrader.Portfolios.Persistence
                 _context.Portfolios.Update(data);
             }
             await _context.SaveChangesAsync(cancellationToken);
-            aggregate.UncommittedEvents.MarkAsCommitted();
         }
 
         private static void ApplyChanges(PortfolioData data, IPortfolio aggregate)
@@ -70,8 +69,11 @@ namespace StockTrader.Portfolios.Persistence
             data.Status = snapshot.Status;
         }
 
-        private static void ApplyChanges(PortfolioData data, IEnumerable<PortfolioEvent> events) =>
-            events.ToList().ForEach(domainEvent => ApplyChanges(data, domainEvent));
+        private static void ApplyChanges(PortfolioData data, IEnumerable events) =>
+            events
+                .OfType<PortfolioEvent>()
+                .ToList()
+                .ForEach(domainEvent => ApplyChanges(data, domainEvent));
 
         private static void ApplyChanges(PortfolioData data, PortfolioEvent domainEvent)
         {

@@ -9,36 +9,42 @@ namespace StockTrader.Shared.Domain
         where TId : IIdentifier
         where TEvent : IDomainEvent
     {
-        private readonly EventSource<TEvent> _uncommittedEvents = new();
+        private EventSource<TEvent> _uncommittedEvents;
 
-        protected EventSourcedAggregateRoot(TId id) : base(id) { }
-        
-        IEventSource<TEvent> IEventSourced<TEvent>.UncommittedEvents =>
+        protected EventSourcedAggregateRoot(TId id) : base(id) =>
+            _uncommittedEvents = new EventSource<TEvent>(this);
+
+        IEventAggregation IEventAggregation.Apply(IDomainEvent domainEvent)
+        {
+            if (domainEvent is TEvent aggregateEvent)
+                Apply(aggregateEvent);
+            return this;
+        }
+
+        IEventSource IEventSourced.UncommittedEvents =>
             _uncommittedEvents;
 
-        IEventAggregation<TEvent> IEventAggregation<TEvent>.Apply(TEvent domainEvent)
+        IEventSourced IEventSourced.ClearUncommittedEvents()
         {
-            Apply(domainEvent);
+            _uncommittedEvents = _uncommittedEvents.Clear();
             return this;
         }
 
         protected void Raise(params TEvent[] domainEvents) =>
             Raise(domainEvents.AsEnumerable());
 
-        protected void Raise(IEnumerable<TEvent> domainEvents)
-        {
-            var events = domainEvents as TEvent[] ?? domainEvents.ToArray();
-            _uncommittedEvents.Append(events);
-        }
+        protected void Raise(IEnumerable<TEvent> domainEvents) => 
+            _uncommittedEvents = _uncommittedEvents.Append(domainEvents);
 
         protected void Apply(params TEvent[] domainEvents) =>
             Apply(domainEvents.AsEnumerable());
 
-        protected void Apply(IEnumerable<TEvent> domainEvents) =>
-            AsProjection().Apply(domainEvents);
+        protected void Apply(IEnumerable<TEvent> domainEvents)
+        {
+            foreach (var domainEvent in domainEvents)
+                Apply(domainEvent);
+        }
 
         protected abstract void Apply(TEvent domainEvent);
-
-        private IEventAggregation<TEvent> AsProjection() => this;
     }
 }
