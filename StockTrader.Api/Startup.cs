@@ -21,15 +21,12 @@ namespace StockTrader.Api
         {
             // Application:
             
-            services.AddPortfoliosCommandHandlers();
+            services.AddPortfoliosApplication();
             
             // Infrastructure:
 
-            services
-                .AddPortfoliosRepositories()
-                .AddPortfoliosStorage(Configuration.GetConnectionString("Portfolios"));
-
-            services.AddMediatorCommandBus();
+            services.AddPortfoliosPersistence(Configuration.GetConnectionString("Portfolios"));
+            services.AddInfrastructure();
             
             // Api:
 

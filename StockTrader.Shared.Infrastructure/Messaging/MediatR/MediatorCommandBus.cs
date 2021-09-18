@@ -14,6 +14,6 @@ namespace StockTrader.Shared.Infrastructure.Messaging.MediatR
 
         public Task Send<TCommand>(TCommand command, CancellationToken cancellationToken = default)
             where TCommand : ICommand =>
-            _mediator.Send(CommandEnvelope.For(command), cancellationToken);
+            _mediator.Send(CommandEnvelope.Of(command), cancellationToken);
     }
 }

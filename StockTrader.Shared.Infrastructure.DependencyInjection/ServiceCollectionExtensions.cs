@@ -5,8 +5,12 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddMediatorCommandBus(
-            this IServiceCollection services) =>
+        public static IServiceCollection AddInfrastructure(
+            this IServiceCollection services)
+        {
             services.AddScoped<ICommandBus, MediatorCommandBus>();
+            services.AddScoped<IEventPublisher, MediatorEventPublisher>();
+            return services;
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddPortfoliosCommandHandlers(
+        public static IServiceCollection AddPortfoliosApplication(
             this IServiceCollection services)
         {
             services.AddMediatR(Library.Assembly);

@@ -15,8 +15,14 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection services,
             string connectionString)
         {
+            services.AddScoped(provider => 
+                new PortfolioDbRepository(provider.GetRequiredService<PortfolioDbContext>())
+                    .UseImmediateEventPublisher(provider.GetRequiredService<IEventPublisher>()));
+            
             return services.AddDbContext<PortfolioDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            return services;
         }
     }
 }

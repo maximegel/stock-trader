@@ -9,7 +9,7 @@ namespace StockTrader.Shared.Application.Messaging
         where TCommand : ICommand
     {
         protected override Task Handle(CommandEnvelope<TCommand> envelope, CancellationToken cancellationToken) =>
-            Handle(envelope.AsCommand(), cancellationToken);
+            Handle(envelope.Payload, cancellationToken);
 
         protected abstract Task Handle(TCommand command, CancellationToken cancellationToken);
     }
