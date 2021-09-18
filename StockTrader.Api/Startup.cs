@@ -25,7 +25,7 @@ namespace StockTrader.Api
             
             // Infrastructure:
 
-            services.AddPortfoliosPersistence(Configuration.GetConnectionString("Portfolios"));
+            services.AddPortfoliosPersistence(Configuration.GetSection("Portfolios"));
             services.AddInfrastructure();
             
             // Api:

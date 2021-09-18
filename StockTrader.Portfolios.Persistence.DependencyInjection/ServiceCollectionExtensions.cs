@@ -1,26 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using StockTrader.Portfolios.Domain;
 using StockTrader.Portfolios.Persistence;
+using StockTrader.Shared.Application.Messaging;
 using StockTrader.Shared.Application.Persistence;
+using StockTrader.Shared.Infrastructure.Persistence;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddPortfoliosRepositories(
-            this IServiceCollection services) =>
-            services.AddScoped<IRepository<IPortfolio>, PortfolioDbRepository>();
-
-        public static IServiceCollection AddPortfoliosStorage(
+        public static IServiceCollection AddPortfoliosPersistence(
             this IServiceCollection services,
-            string connectionString)
+            IConfigurationSection configuration)
         {
             services.AddScoped(provider => 
                 new PortfolioDbRepository(provider.GetRequiredService<PortfolioDbContext>())
                     .UseImmediateEventPublisher(provider.GetRequiredService<IEventPublisher>()));
             
-            return services.AddDbContext<PortfolioDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            services.AddDbContext<PortfolioDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             return services;
         }

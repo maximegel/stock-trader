@@ -18,14 +18,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <AppSettingsFiles Include="appsettings.*.json" />
+      <None Update="appsettings.Development.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
-    <Target Name="CopyAppSettingsFiles" AfterTargets="AfterBuild">
-        <Copy SourceFiles="@(AppSettingsFiles)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
-        <Copy SourceFiles="@(AppSettingsFiles)" DestinationFolder="../StockTrader.Api" SkipUnchangedFiles="true" />
-        <Copy SourceFiles="@(AppSettingsFiles)" 
-              DestinationFolder="../StockTrader.Api/bin/$(Configuration)/$(TargetFramework)" 
-              SkipUnchangedFiles="true" />
-    </Target>
 
 </Project>

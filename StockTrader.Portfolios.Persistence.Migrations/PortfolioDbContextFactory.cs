@@ -12,12 +12,12 @@ namespace StockTrader.Portfolios.Persistence.Migrations
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.Portfolios.Development.json")
+                .AddJsonFile("appsettings.Development.json")
                 .Build();
 
             var options = new DbContextOptionsBuilder<PortfolioDbContext>()
                 .UseSqlServer(
-                    configuration.GetConnectionString("Portfolios"),
+                    configuration.GetConnectionString("DefaultConnection"),
                     options => options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName))
                 .Options;
 
