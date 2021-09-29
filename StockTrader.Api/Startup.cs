@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,8 +40,8 @@ namespace StockTrader.Api
             
             services.AddSwaggerGen(options =>
             {
-                options.CustomOperationIds(dsc => ((ControllerActionDescriptor)dsc.ActionDescriptor).ActionName);
-                options.SwaggerDoc(Version, new OpenApiInfo {Title = "StockTrader.Api", Version = Version});
+                options.SwaggerDoc(Version, new OpenApiInfo {Title = "StockTrader API", Version = Version});
+                options.EnableAnnotations();
             });
         }
 
@@ -54,7 +53,7 @@ namespace StockTrader.Api
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(options => 
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", $"StockTrader.Api {Version}"));
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", $"StockTrader API {Version}"));
             }
 
             app.UseHttpsRedirection();
