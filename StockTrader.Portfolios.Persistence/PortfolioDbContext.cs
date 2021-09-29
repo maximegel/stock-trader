@@ -9,8 +9,6 @@ namespace StockTrader.Portfolios.Persistence
             base(options) { }
 
         internal DbSet<PortfolioData> Portfolios { get; init; } = null!;
-        internal DbSet<HoldingData> Holdings { get; init; } = null!;
-        internal DbSet<OrderData> Orders { get; init; } = null!;
 
         protected override void OnModelCreating(ModelBuilder model)
         {

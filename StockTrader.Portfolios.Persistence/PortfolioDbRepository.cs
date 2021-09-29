@@ -33,8 +33,7 @@ namespace StockTrader.Portfolios.Persistence
                 Status = data.Status,
                 Holdings = data.Holdings.ToDictionary(h => h.Symbol, h => h.ShareCount)
             };
-            var aggregate = PortfolioFactory.Load((PortfolioId) id);
-            return aggregate.RestoreSnapshot(snapshot);
+            return PortfolioFactory.LoadFromSnapshot(snapshot);
         }
 
         public async Task Save(IPortfolio aggregate, CancellationToken cancellationToken = default)

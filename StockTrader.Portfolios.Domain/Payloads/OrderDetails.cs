@@ -1,9 +1,9 @@
 ﻿namespace StockTrader.Portfolios.Domain.Payloads
 {
     public record OrderDetails(
-        string Symbol,
-        int Shares,
         TradeType TradeType,
+        int Shares,
+        string Symbol,
         OrderType OrderType)
     {
         public decimal? PriceLimit { get; init; }

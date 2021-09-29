@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\StockTrader.Portfolios.Persistence.Migrations\StockTrader.Portfolios.Persistence.Migrations.csproj" />
       <ProjectReference Include="..\StockTrader.Portfolios.Persistence\StockTrader.Portfolios.Persistence.csproj" />
     </ItemGroup>
 

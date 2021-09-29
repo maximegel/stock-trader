@@ -14,11 +14,11 @@ namespace StockTrader.Portfolios.Domain.Internal
         public Holdings Holdings { get; private set; } = Holdings.Empty;
         private IPortfolioState State { get; set; } = new Nil();
 
-        public void Execute(PortfolioCommand command)
+        public IPortfolio Execute(PortfolioCommand command)
         {
             var events = command.ExecuteOn(this).ToArray();
             Raise(events);
-            Apply(events);
+            return (this as IPortfolio).Apply(events);
         }
 
         public void Open() =>
@@ -49,7 +49,10 @@ namespace StockTrader.Portfolios.Domain.Internal
                     shares => shares.ToInt())
             };
 
-        protected override void Apply(PortfolioEvent domainEvent) =>
+        public IPortfolio Apply(PortfolioEvent domainEvent)
+        {
             domainEvent.ApplyTo(this);
+            return this;
+        }
     }
 }

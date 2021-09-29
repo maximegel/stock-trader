@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using StockTrader.Portfolios.Domain;
 using StockTrader.Portfolios.Persistence;
+using StockTrader.Portfolios.Persistence.Migrations;
 using StockTrader.Shared.Application.Messaging;
 using StockTrader.Shared.Application.Persistence;
 using StockTrader.Shared.Infrastructure.Persistence;
@@ -19,7 +20,9 @@ namespace Microsoft.Extensions.DependencyInjection
                     .UseImmediateEventPublisher(provider.GetRequiredService<IEventPublisher>()));
             
             services.AddDbContext<PortfolioDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"), 
+                    opts => opts.MigrationsAssembly(typeof(PortfolioDbContextFactory).Assembly.FullName)));
 
             return services;
         }
