@@ -9,6 +9,7 @@ namespace StockTrader.Portfolios.Domain
         public static implicit operator DomainException(PortfolioFailure failure) =>
             new(failure.Message);
 
-        internal override void ApplyTo(IPortfolioBehavior portfolio) { }
+        internal override PortfolioState ApplyTo(PortfolioState portfolio) =>
+            portfolio;
     }
 }

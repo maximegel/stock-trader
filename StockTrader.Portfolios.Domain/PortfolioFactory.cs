@@ -9,15 +9,13 @@ namespace StockTrader.Portfolios.Domain
         public static IPortfolio LoadFromHistory(PortfolioId id, params PortfolioEvent[] events) =>
             Load(id).Apply(events);
         
-        public static IPortfolio LoadFromSnapshot(PortfolioSnapshot snapshot) =>
-            Load(snapshot.Id).RestoreSnapshot(snapshot);
-        
+        public static IPortfolio LoadFromSnapshot(PortfolioId id, PortfolioSnapshot snapshot) => 
+            Load(id).RestoreSnapshot(snapshot);
+
         public static IPortfolio Open(OpenPortfolio command)
         {
-            var portfolioId = PortfolioId.Parse(command.AggregateId);
-            var portfolio = new Portfolio(portfolioId);
-            portfolio.Execute(command);
-            return portfolio;
+            var id = PortfolioId.Parse(command.AggregateId);
+            return new Portfolio(id).Execute(command);
         }
         
         private static IPortfolio Load(IIdentifier id) =>

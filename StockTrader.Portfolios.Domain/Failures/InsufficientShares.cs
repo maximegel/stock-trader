@@ -4,9 +4,12 @@ namespace StockTrader.Portfolios.Domain.Failures
 {
     public record InsufficientShares : PortfolioFailure
     {
-        internal InsufficientShares(ShareCount required, ShareCount held)
-            : base($"Insufficient shares, {required} required, {held} held.")
-        {
-        }
+        public InsufficientShares(int heldShares, int requiredShares, string symbol)
+            : this(
+                new ShareCount(heldShares, new Symbol(symbol)),
+                new ShareCount(requiredShares, new Symbol(symbol))) { }
+
+        internal InsufficientShares(ShareCount held, ShareCount required)
+            : base($"Insufficient shares, {held} required, {required} held.") { }
     }
 }

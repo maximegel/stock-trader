@@ -5,9 +5,7 @@ namespace StockTrader.Portfolios.Domain.Events
     public record PortfolioClosed
         : PortfolioEvent
     {
-        internal override void ApplyTo(IPortfolioBehavior portfolio)
-        {
+        internal override PortfolioState ApplyTo(PortfolioState portfolio) => 
             portfolio.Close();
-        }
     }
 }

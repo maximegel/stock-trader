@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace StockTrader.Shared.Domain
 {
-    public class EventSource<TEvent> : IEventSource<TEvent>
+    public class EventSource<TEvent> : IEventSource
         where TEvent : IDomainEvent
     {
         private readonly IAggregateRoot _aggregate;
@@ -30,8 +30,8 @@ namespace StockTrader.Shared.Domain
         public EventSource<TEvent> Clear() =>
             new(_aggregate);
 
-        IEnumerator<TEvent> IEnumerable<TEvent>.GetEnumerator() => 
-            _events.GetEnumerator();
+        IEnumerator<IDomainEvent> IEnumerable<IDomainEvent>.GetEnumerator() => 
+            _events.OfType<IDomainEvent>().GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => 
             ((IEnumerable) _events).GetEnumerator();

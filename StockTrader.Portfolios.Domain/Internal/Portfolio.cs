@@ -1,57 +1,44 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using StockTrader.Portfolios.Domain.Failures;
 using StockTrader.Portfolios.Domain.Internal.States;
 using StockTrader.Shared.Domain;
 
 namespace StockTrader.Portfolios.Domain.Internal
 {
     internal class Portfolio : EventSourcedAggregateRoot<PortfolioId, PortfolioEvent>,
-        IPortfolio,
-        IPortfolioBehavior,
-        IPortfolioModel
+        IPortfolio
     {
-        public Portfolio(PortfolioId id) : base(id) {}
+        private PortfolioState _state = new NotOpened();
 
-        public Holdings Holdings { get; private set; } = Holdings.Empty;
-        private IPortfolioState State { get; set; } = new Nil();
+        public Portfolio(PortfolioId id) : base(id) { }
+
+        private PortfolioModel Model => new(_state);
 
         public IPortfolio Execute(PortfolioCommand command)
         {
-            var events = command.ExecuteOn(this).ToArray();
-            Raise(events);
-            return (this as IPortfolio).Apply(events);
+            try
+            {
+                var events = command.ExecuteOn(Model).ToArray();
+                (this as IPortfolio).Apply(events);
+                Raise(events);
+            }
+            catch (Exception e)
+            {
+                Raise(new PortfolioFailedUnexpectedly(e));
+            }
+            return this;
         }
 
-        public void Open() =>
-            State = State.Open();
-
-        public void DebitShares(ShareCount shares) =>
-            State = State.DebitShares(() => 
-                Holdings = Holdings.Debit(shares));
-
-        public void Close() =>
-            State = State.Close();
-
         public IPortfolio RestoreSnapshot(PortfolioSnapshot snapshot) =>
-            new Portfolio(Id)
-            {
-                State = PortfolioStateFactory.FromLabel(snapshot.Status),
-                Holdings = new Holdings(
-                    snapshot.Holdings.Select(
-                        pair => new ShareCount(pair.Value, new Symbol(pair.Key))))
-            };
+            new Portfolio(Id) { _state = PortfolioState.FromSnapshot(snapshot) };
 
         public PortfolioSnapshot TakeSnapshot() =>
-            new(Id)
-            {
-                Status = State.Status,
-                Holdings = Holdings.ToDictionary(
-                    shares => shares.Symbol.ToString(), 
-                    shares => shares.ToInt())
-            };
+            _state.ToSnapshot();
 
         public IPortfolio Apply(PortfolioEvent domainEvent)
         {
-            domainEvent.ApplyTo(this);
+            _state = domainEvent.ApplyTo(_state);
             return this;
         }
     }

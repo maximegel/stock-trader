@@ -10,7 +10,8 @@ namespace StockTrader.Portfolios.Domain.Internal
         public ShareCount(int count, Symbol symbol)
         {
             if (count < 0) 
-                throw new ArgumentException("ShareCount cannot be negative.");
+                throw new ArgumentException(
+                    "Share count cannot be negative.", nameof(count));
             
             Count = count;
             Symbol = symbol;
@@ -22,8 +23,15 @@ namespace StockTrader.Portfolios.Domain.Internal
         public static ShareCount Zero(Symbol symbol) =>
             new(0, symbol);
 
-        public bool CanDebit(ShareCount shareCount) =>
-            Symbol == shareCount.Symbol && Count >= shareCount.Count;
+        public bool CanDebit(ShareCount shares)
+        {
+            if (shares.Symbol != Symbol)
+                throw new ArgumentException(
+                    $"Cannot debit shares of different symbol, {Symbol} expected, {shares.Symbol} received.",
+                    nameof(shares));
+            
+            return Count >= shares.Count;
+        }
 
         public ShareCount Debit(ShareCount shares)
         {
@@ -31,10 +39,11 @@ namespace StockTrader.Portfolios.Domain.Internal
             return new ShareCount(Count - shares.Count, Symbol);
         }
 
-        public int ToInt() => Count;
-
         public override string ToString() => 
             $"{Count} {Symbol}";
+        
+        public static implicit operator int(ShareCount self) =>
+            self.Count;
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

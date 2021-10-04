@@ -9,7 +9,7 @@ namespace StockTrader.Portfolios.Persistence.DataModels
     {
         public Guid Id { get; init; }
         public string? Name { get; set; }
-        public PortfolioStatus Status { get; set; }
+        public string Status { get; set; } = null!;
         public ICollection<HoldingData> Holdings { get; init; } = new List<HoldingData>();
         public ICollection<OrderData> Orders { get; init; } = new List<OrderData>();
     }

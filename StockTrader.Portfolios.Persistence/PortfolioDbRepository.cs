@@ -28,12 +28,10 @@ namespace StockTrader.Portfolios.Persistence
 
             if (data == null) return null;
 
-            var snapshot = new PortfolioSnapshot((PortfolioId) id)
+            return PortfolioFactory.LoadFromSnapshot((PortfolioId) id, new PortfolioSnapshot(data.Status)
             {
-                Status = data.Status,
                 Holdings = data.Holdings.ToDictionary(h => h.Symbol, h => h.ShareCount)
-            };
-            return PortfolioFactory.LoadFromSnapshot(snapshot);
+            });
         }
 
         public async Task Save(IPortfolio aggregate, CancellationToken cancellationToken = default)
@@ -81,9 +79,9 @@ namespace StockTrader.Portfolios.Persistence
                 case PortfolioOpened (var name):
                     data.Name = name;
                     break;
-                case SharesDebited (var symbol, var shares):
+                case SharesDebited(_, var remainingShares, var symbol):
                     var holding = data.Holdings.Single(h => h.Symbol == symbol);
-                    holding.ShareCount -= shares;
+                    holding.ShareCount = remainingShares;
                     break;
                 case OrderPlaced (var orderId, var details):
                     data.Orders.Add(new OrderData

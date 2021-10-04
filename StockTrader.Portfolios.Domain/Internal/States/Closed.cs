@@ -1,17 +1,7 @@
-﻿using System;
-
-namespace StockTrader.Portfolios.Domain.Internal.States
+﻿namespace StockTrader.Portfolios.Domain.Internal.States
 {
-    internal class Closed : IPortfolioState
+    internal record Closed : PortfolioState<Closed>
     {
-        public PortfolioStatus Status => PortfolioStatus.Closed;
-
-        public IPortfolioState Open() => 
-            throw new InvalidOperationException();
-
-        public IPortfolioState DebitShares(Action action) => 
-            throw new InvalidOperationException();
-
-        public IPortfolioState Close() => this;
+        public override PortfolioState Close() => this;
     }
 }

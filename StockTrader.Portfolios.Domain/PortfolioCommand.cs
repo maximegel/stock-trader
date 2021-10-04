@@ -11,6 +11,6 @@ namespace StockTrader.Portfolios.Domain
 
         public string AggregateId { get; }
         
-        internal abstract IEnumerable<PortfolioEvent> ExecuteOn(IPortfolioModel portfolio);
+        internal abstract IEnumerable<PortfolioEvent> ExecuteOn(PortfolioModel portfolio);
     }
 }

@@ -6,6 +6,6 @@ namespace StockTrader.Portfolios.Domain
 {
     public abstract record PortfolioEvent : IDomainEvent
     {
-        internal abstract void ApplyTo(IPortfolioBehavior portfolio);
+        internal abstract PortfolioState ApplyTo(PortfolioState portfolio);
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using StockTrader.Portfolios.Domain.Failures;
 
 namespace StockTrader.Portfolios.Domain.Internal
 {
@@ -16,41 +14,34 @@ namespace StockTrader.Portfolios.Domain.Internal
         private Holdings(ImmutableDictionary<Symbol, ShareCount> items) => 
             _items = items;
 
-        public static Holdings Empty { get; } = new(ImmutableDictionary<Symbol, ShareCount>.Empty);
-
-        public ShareCount CountOf(Symbol symbol)
-        {
-            return NoSharesOf(symbol) 
-                ? ShareCount.Zero(symbol) 
-                : _items[symbol];
-        }
-
+        public static Holdings Empty { get; } = 
+            new(ImmutableDictionary<Symbol, ShareCount>.Empty);
+        
         public bool CanDebit(ShareCount shareCount)
         {
             var symbol = shareCount.Symbol;
             var heldShares = CountOf(symbol);
             return heldShares.CanDebit(shareCount);
         }
-        
-        public Holdings Debit(ShareCount shareCount)
+
+        public ShareCount CountOf(Symbol symbol)
         {
-            var symbol = shareCount.Symbol;
-            var heldShares = CountOf(shareCount.Symbol);
-            if (!CanDebit(shareCount)) throw new InsufficientShares(shareCount, heldShares);
-            return SetCountOf(symbol, shares => shares.Debit(shareCount));
+            return HoldSharesOf(symbol) 
+                ? _items[symbol] 
+                : ShareCount.Zero(symbol);
         }
 
-        private bool NoSharesOf(Symbol symbol) =>
-            !_items.ContainsKey(symbol);
-
-        private Holdings SetCountOf(Symbol symbol, Func<ShareCount, ShareCount> mutation)
+        public Holdings SetCount(ShareCount count)
         {
-            var shares = CountOf(symbol);
-            var items = _items.SetItem(symbol, mutation(shares));
+            var items = _items.SetItem(count.Symbol, count);
             return new Holdings(items);
         }
 
-        public IEnumerator<ShareCount> GetEnumerator() => _items.Values.GetEnumerator();
+        private bool HoldSharesOf(Symbol symbol) =>
+            _items.ContainsKey(symbol);
+
+        public IEnumerator<ShareCount> GetEnumerator() => 
+            _items.Values.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

@@ -1,19 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace StockTrader.Shared.Domain
 {
-    public interface IEventSource<out TEvent> : 
-        IEventSource, IEnumerable<TEvent>
-        where TEvent : IDomainEvent
-    { }
-    
-    public interface IEventSource : IEnumerable
+    public interface IEventSource : IEnumerable<IDomainEvent>
     {
         IAggregateRoot Aggregate { get; }
-
-        IEnumerable<IDomainEvent> AsEnumerable() =>
-            this.OfType<IDomainEvent>();
     }
 }

@@ -17,7 +17,6 @@ namespace StockTrader.Portfolios.Persistence
                 entity.ToTable("Portfolio");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.Property(e => e.Status).HasConversion<string>();
                 entity.HasMany(e => e.Holdings).WithOne(e => e.Portfolio).HasForeignKey(e => e.PortfolioId);
                 entity.HasMany(e => e.Orders).WithOne(e => e.Portfolio).HasForeignKey(e => e.PortfolioId);
             });
