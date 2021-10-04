@@ -20,7 +20,7 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Endpoints
                 .ForCommandOf<IPortfolio>();
         
         [Fact]
-        public async Task Call_CommitsEvents()
+        public async Task OpenPortfolio_WhenNotOpened_Opens()
         {
             // Act
             var response = await _testBed.Client.PostAsJsonAsync(
@@ -30,8 +30,7 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Endpoints
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Accepted);
             _testBed.CommittedEvents.Should().BeEquivalentTo(
-                new[] { new PortfolioOpened("Main") },
-                opt => opt.WithStrictOrdering());
+                new[] { new PortfolioOpened("Main") });
         }
     }
 }

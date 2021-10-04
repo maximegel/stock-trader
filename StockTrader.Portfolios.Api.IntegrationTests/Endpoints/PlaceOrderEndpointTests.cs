@@ -21,7 +21,7 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Endpoints
                 .ForCommandOf<IPortfolio>();
         
         [Fact]
-        public async Task Call_CommitsEvents()
+        public async Task PlaceOrder_WhenPortfolioOpened_PlacesOrder()
         {
             // Arrange
             var id = PortfolioId.Generate();
@@ -37,12 +37,12 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Endpoints
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Accepted);
             _testBed.CommittedEvents.Should().BeEquivalentTo(
-                new[]
+                new []
                 {
                     new OrderPlaced("", new OrderDetails(
                         TradeType.Buy, 150, "TSLA", OrderType.Market))
                 },
-                opt => opt.WithStrictOrdering().Excluding(e => e.OrderId));
+                opt => opt.Excluding(e => e.OrderId));
         }
     }
 }

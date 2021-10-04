@@ -18,7 +18,7 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Endpoints
                 .ForCommandOf<IPortfolio>();
         
         [Fact]
-        public async Task Call_CommitsEvents()
+        public async Task ClosePortfolio_WhenOpened_Closes()
         {
             // Arrange
             var id = PortfolioId.Generate();
@@ -35,7 +35,7 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Endpoints
             response.StatusCode.Should().Be(HttpStatusCode.Accepted);
             _testBed.CommittedEvents.Should().BeEquivalentTo(
                 new[] { new PortfolioClosed() },
-                opt => opt.WithStrictOrdering().ComparingRecordsByValue());
+                opt => opt.ComparingRecordsByValue());
         }
     }
 }
