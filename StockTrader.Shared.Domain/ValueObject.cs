@@ -16,12 +16,15 @@ namespace StockTrader.Shared.Domain
             ReferenceEquals(this, obj) ||
             obj is not null && GetType() == obj.GetType() && Equals(obj as ValueObject<TSelf>);
 
-        public override int GetHashCode()
-        {
-            return unchecked(GetEqualityComponents()
-                .Aggregate(17, (current, obj) => (current * 23) ^ (obj?.GetHashCode() ?? 0)));
-        }
+        public override int GetHashCode() =>
+            GetEqualityComponents()
+                .Select(obj => obj?.GetHashCode() ?? 0)
+                .Aggregate(17, (hashCode, next) => unchecked((hashCode * 23) ^ next));
 
         protected abstract IEnumerable<object> GetEqualityComponents();
+
+        private bool Equals(ValueObject<TSelf>? other) =>
+            other != null &&
+            GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
     }
 }

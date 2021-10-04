@@ -13,6 +13,9 @@ namespace StockTrader.Shared.Domain
         public override string ToString() => 
             Value?.ToString() ?? "";
 
+        public static implicit operator TValue(UnaryValueObject<TSelf, TValue> self) =>
+            self.Value;
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             if (Value is not null) 
