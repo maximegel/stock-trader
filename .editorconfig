@@ -1,0 +1,62 @@
+# XML project files
+[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
+indent_size = 2
+
+# XML config files
+[*.{props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
+indent_size = 2
+
+# Code files
+[*.cs]
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+### StyleCop ###
+## See available rules at https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/DOCUMENTATION.md
+
+## Special Rules (SA0000-) ##
+
+# XML comment analysis is disabled due to project configuration
+dotnet_diagnostic.SA0001.severity = None
+
+## Spacing Rules (SA1000-) ##
+
+## Readability Rules (SA1100-) ##
+
+# Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = None
+
+## Ordering Rules (SA1200-) ##
+
+# Using directive should appear within a namespace declaration
+dotnet_diagnostic.SA1200.severity = None
+
+## Naming Rules (SA1300-) ##
+
+# Field should not begin with an underscore
+dotnet_diagnostic.SA1309.severity = None
+
+# Parameter should begin with lower-case letter
+# XXX: Disabled until full records support. 
+dotnet_diagnostic.SA1313.severity = None
+
+## Maintainability Rules (SA1400-) ##
+
+## Layout Rules (SA1500-) ##
+
+## Documentation Rules (SA1600-) ##
+
+# Elements should be documented
+dotnet_diagnostic.SA1600.severity = None
+
+# Partial elements should be documented
+dotnet_diagnostic.SA1601.severity = None
+
+# Enumeration items should be documented
+dotnet_diagnostic.SA1602.severity = None
+
+# The file header is missing or not located at the top of the file.
+dotnet_diagnostic.SA1633.severity = None
+
+## Alternative Rules (SX0000-) ##
