@@ -17,27 +17,27 @@ trim_trailing_whitespace = true
 
 ## Special Rules (SA0000-) ##
 
-# XML comment analysis is disabled due to project configuration
+# [SA0001] XML comment analysis is disabled due to project configuration
 dotnet_diagnostic.SA0001.severity = None
 
 ## Spacing Rules (SA1000-) ##
 
 ## Readability Rules (SA1100-) ##
 
-# Prefix local calls with this
+# [SA1101] Prefix local calls with this
 dotnet_diagnostic.SA1101.severity = None
 
 ## Ordering Rules (SA1200-) ##
 
-# Using directive should appear within a namespace declaration
+# [SA1200] Using directive should appear within a namespace declaration
 dotnet_diagnostic.SA1200.severity = None
 
 ## Naming Rules (SA1300-) ##
 
-# Field should not begin with an underscore
+# [SA1309] Field should not begin with an underscore
 dotnet_diagnostic.SA1309.severity = None
 
-# Parameter should begin with lower-case letter
+# [SA1313] Parameter should begin with lower-case letter
 # XXX: Disabled until full records support. 
 dotnet_diagnostic.SA1313.severity = None
 
@@ -47,16 +47,25 @@ dotnet_diagnostic.SA1313.severity = None
 
 ## Documentation Rules (SA1600-) ##
 
-# Elements should be documented
+# [SA1600] Elements should be documented
 dotnet_diagnostic.SA1600.severity = None
 
-# Partial elements should be documented
+# [SA1601] Partial elements should be documented
 dotnet_diagnostic.SA1601.severity = None
 
-# Enumeration items should be documented
+# [SA1602] Enumeration items should be documented
 dotnet_diagnostic.SA1602.severity = None
 
-# The file header is missing or not located at the top of the file.
+# [SA1633] The file header is missing or not located at the top of the file.
 dotnet_diagnostic.SA1633.severity = None
 
 ## Alternative Rules (SX0000-) ##
+
+### SonarLint ###
+## See available rules at https://rules.sonarsource.com/csharp
+
+# [S1210] When implementing IComparable<T> or IComparable, you should also override Equals, ==, !=.
+dotnet_diagnostic.S1210.severity = None
+
+# [S3875] Remove this overload of 'operator =='
+dotnet_diagnostic.S3875.severity = None
