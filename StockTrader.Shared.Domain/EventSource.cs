@@ -9,9 +9,11 @@ namespace StockTrader.Shared.Domain
     {
         private readonly IAggregateRoot _aggregate;
         private readonly IEnumerable<TEvent> _events;
-        
-        public EventSource(IAggregateRoot aggregate) : 
-            this(aggregate, Enumerable.Empty<TEvent>()) { }
+
+        public EventSource(IAggregateRoot aggregate)
+            : this(aggregate, Enumerable.Empty<TEvent>())
+        {
+        }
 
         private EventSource(IAggregateRoot aggregate, IEnumerable<TEvent> events)
         {
@@ -30,10 +32,10 @@ namespace StockTrader.Shared.Domain
         public EventSource<TEvent> Clear() =>
             new(_aggregate);
 
-        IEnumerator<IDomainEvent> IEnumerable<IDomainEvent>.GetEnumerator() => 
+        IEnumerator<IDomainEvent> IEnumerable<IDomainEvent>.GetEnumerator() =>
             _events.OfType<IDomainEvent>().GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => 
-            ((IEnumerable) _events).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() =>
+            ((IEnumerable)_events).GetEnumerator();
     }
 }

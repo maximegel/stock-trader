@@ -16,20 +16,21 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Endpoints
             _testBed = TestBed.Create
                 .WithApiFactory(apiFactory)
                 .ForCommandOf<IPortfolio>();
-        
+
         [Fact]
         public async Task ClosePortfolio_WhenOpened_Closes()
         {
             // Arrange
             var id = PortfolioId.Generate();
             await _testBed.Save(
-                PortfolioFactory.LoadFromHistory(id,
+                PortfolioFactory.LoadFromHistory(
+                    id,
                     new PortfolioOpened("Main")));
 
             // Act
             var response = await _testBed.Client.PutAsync(
                 $"/api/portfolio/{id}/close",
-                null);
+                null!);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Accepted);

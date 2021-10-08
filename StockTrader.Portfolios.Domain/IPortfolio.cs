@@ -2,7 +2,7 @@
 
 namespace StockTrader.Portfolios.Domain
 {
-    public interface IPortfolio : 
+    public interface IPortfolio :
         IAggregateRoot<PortfolioId>,
         IEventSourced,
         IEventAggregation<IPortfolio, PortfolioEvent>,

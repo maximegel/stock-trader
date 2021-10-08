@@ -12,7 +12,7 @@ namespace StockTrader.Portfolios.Application.CommandHandlers
     {
         private readonly IRepository<IPortfolio> _repository;
 
-        public PlaceOrderHandler(IRepository<IPortfolio> repository) => 
+        public PlaceOrderHandler(IRepository<IPortfolio> repository) =>
             _repository = repository;
 
         protected override async Task Handle(PlaceOrder command, CancellationToken cancellationToken)

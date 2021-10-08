@@ -12,28 +12,30 @@ namespace StockTrader.Portfolios.Domain.UnitTests.Commands
         {
             // Arrange
             var id = PortfolioId.Generate();
-            var portfolio = PortfolioFactory.LoadFromHistory(id,
+            var portfolio = PortfolioFactory.LoadFromHistory(
+                id,
                 new PortfolioOpened("Main"),
                 new PortfolioClosed());
-            
+
             // Act
             portfolio.Execute(new ClosePortfolio(id));
-            
+
             // Assert
             portfolio.UncommittedEvents.Should().BeEmpty();
         }
-        
+
         [Fact]
         public void ClosePortfolio_WhenOpened_Closes()
         {
             // Arrange
             var id = PortfolioId.Generate();
-            var portfolio = PortfolioFactory.LoadFromHistory(id,
+            var portfolio = PortfolioFactory.LoadFromHistory(
+                id,
                 new PortfolioOpened("Main"));
-            
+
             // Act
             portfolio.Execute(new ClosePortfolio(id));
-            
+
             // Assert
             portfolio.UncommittedEvents.Should().BeEquivalentTo(
                 new[] { new PortfolioClosed() },

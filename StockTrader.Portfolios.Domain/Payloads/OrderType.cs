@@ -1,4 +1,8 @@
 ﻿namespace StockTrader.Portfolios.Domain.Payloads
 {
-    public enum OrderType { Limit, Market }
+    public enum OrderType
+    {
+        Limit,
+        Market,
+    }
 }

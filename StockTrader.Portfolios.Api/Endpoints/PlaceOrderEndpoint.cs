@@ -26,6 +26,6 @@ namespace StockTrader.Portfolios.Api.Endpoints
             return Accepted();
         }
     }
-    
+
     public record PlaceOrderDto(OrderDetails Details);
 }

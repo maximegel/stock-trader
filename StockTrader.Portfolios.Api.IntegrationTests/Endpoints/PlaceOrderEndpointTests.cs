@@ -19,13 +19,14 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Endpoints
             _testBed = TestBed.Create
                 .WithApiFactory(apiFactory)
                 .ForCommandOf<IPortfolio>();
-        
+
         [Fact]
         public async Task PlaceOrder_WhenPortfolioOpened_PlacesOrder()
         {
             // Arrange
             var id = PortfolioId.Generate();
-            await _testBed.Save(PortfolioFactory.LoadFromHistory(id,
+            await _testBed.Save(PortfolioFactory.LoadFromHistory(
+                id,
                 new PortfolioOpened("Main")));
 
             // Act
@@ -37,10 +38,10 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Endpoints
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Accepted);
             _testBed.CommittedEvents.Should().BeEquivalentTo(
-                new []
+                new[]
                 {
-                    new OrderPlaced("", new OrderDetails(
-                        TradeType.Buy, 150, "TSLA", OrderType.Market))
+                    new OrderPlaced(string.Empty, new OrderDetails(
+                        TradeType.Buy, 150, "TSLA", OrderType.Market)),
                 },
                 opt => opt.Excluding(e => e.OrderId));
         }

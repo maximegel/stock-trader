@@ -4,7 +4,10 @@ namespace StockTrader.Portfolios.Domain.Internal
 {
     internal class PortfolioStatus : UnaryValueObject<PortfolioStatus, string>
     {
-        private PortfolioStatus(string value) : base(value) { }
+        private PortfolioStatus(string value)
+            : base(value)
+        {
+        }
 
         public static PortfolioStatus For<TState>()
             where TState : PortfolioState

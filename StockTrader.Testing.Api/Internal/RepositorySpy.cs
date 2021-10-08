@@ -25,11 +25,13 @@ namespace StockTrader.Testing.Api.Internal
         {
             _committedEvents.Clear();
             var uncommittedEvents = CopyUncommittedEvents(aggregate);
-            
+
             await _spied.Save(aggregate, cancellationToken);
-            
+
             if (EventsHaveBeenCommitted(aggregate))
+            {
                 _committedEvents.AddRange(uncommittedEvents);
+            }
         }
 
         private static IEnumerable<IDomainEvent> CopyUncommittedEvents(TAggregate aggregate) =>
@@ -37,7 +39,7 @@ namespace StockTrader.Testing.Api.Internal
 
         private static bool EventsHaveBeenCommitted(TAggregate aggregate) =>
             !GetUncommittedEvents(aggregate).Any();
-        
+
         private static IEnumerable<IDomainEvent> GetUncommittedEvents(TAggregate aggregate) =>
             (aggregate as IEventSourced)?.UncommittedEvents.AsEnumerable() ??
             Enumerable.Empty<IDomainEvent>();

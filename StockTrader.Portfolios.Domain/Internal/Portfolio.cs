@@ -11,7 +11,10 @@ namespace StockTrader.Portfolios.Domain.Internal
     {
         private PortfolioState _state = new NotOpened();
 
-        public Portfolio(PortfolioId id) : base(id) { }
+        public Portfolio(PortfolioId id)
+            : base(id)
+        {
+        }
 
         private PortfolioModel Model => new(_state);
 
@@ -23,10 +26,11 @@ namespace StockTrader.Portfolios.Domain.Internal
                 (this as IPortfolio).Apply(events);
                 Raise(events);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Raise(new PortfolioFailedUnexpectedly(e));
+                Raise(new PortfolioFailedUnexpectedly());
             }
+
             return this;
         }
 

@@ -11,7 +11,7 @@ namespace StockTrader.Shared.Domain
 
         TSelf Apply(params TEvent[] domainEvents) =>
             Apply(domainEvents.AsEnumerable());
-            
+
         TSelf Apply(IEnumerable<TEvent> domainEvents) =>
             (TSelf)domainEvents.Aggregate(this, (agg, e) => agg.Apply(e));
     }

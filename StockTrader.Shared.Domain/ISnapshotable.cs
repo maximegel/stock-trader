@@ -4,7 +4,7 @@
         where TSelf : ISnapshotable<TSelf, TSnapshot>
     {
         TSelf RestoreSnapshot(TSnapshot snapshot);
-        
+
         TSnapshot TakeSnapshot();
     }
 }

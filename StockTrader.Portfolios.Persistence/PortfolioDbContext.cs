@@ -5,8 +5,10 @@ namespace StockTrader.Portfolios.Persistence
 {
     public class PortfolioDbContext : DbContext
     {
-        public PortfolioDbContext(DbContextOptions<PortfolioDbContext> options) :
-            base(options) { }
+        public PortfolioDbContext(DbContextOptions<PortfolioDbContext> options)
+            : base(options)
+        {
+        }
 
         internal DbSet<PortfolioData> Portfolios { get; init; } = null!;
 
@@ -20,13 +22,13 @@ namespace StockTrader.Portfolios.Persistence
                 entity.HasMany(e => e.Holdings).WithOne(e => e.Portfolio).HasForeignKey(e => e.PortfolioId);
                 entity.HasMany(e => e.Orders).WithOne(e => e.Portfolio).HasForeignKey(e => e.PortfolioId);
             });
-            
+
             model.Entity<HoldingData>(entity =>
             {
                 entity.ToTable("Holding");
-                entity.HasKey(e => new {e.PortfolioId, e.Symbol});
+                entity.HasKey(e => new { e.PortfolioId, e.Symbol });
             });
-            
+
             model.Entity<OrderData>(entity =>
             {
                 entity.ToTable("Order");

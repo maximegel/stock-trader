@@ -26,17 +26,20 @@ namespace StockTrader.Portfolios.Persistence
                 .Include(p => p.Orders)
                 .FirstOrDefaultAsync(p => p.Id.ToString() == id.ToString(), cancellationToken);
 
-            if (data == null) return null;
-
-            return PortfolioFactory.LoadFromSnapshot((PortfolioId) id, new PortfolioSnapshot(data.Status)
+            if (data == null)
             {
-                Holdings = data.Holdings.ToDictionary(h => h.Symbol, h => h.ShareCount)
+                return null;
+            }
+
+            return PortfolioFactory.LoadFromSnapshot((PortfolioId)id, new PortfolioSnapshot(data.Status)
+            {
+                Holdings = data.Holdings.ToDictionary(h => h.Symbol, h => h.ShareCount),
             });
         }
 
         public async Task Save(IPortfolio aggregate, CancellationToken cancellationToken = default)
         {
-            var id = (Guid) aggregate.Id;
+            var id = (Guid)aggregate.Id;
             var data = await _context.Portfolios.FindAsync(new object[] { id }, cancellationToken);
             if (data == null)
             {
@@ -49,6 +52,7 @@ namespace StockTrader.Portfolios.Persistence
                 ApplyChanges(data, aggregate);
                 _context.Portfolios.Update(data);
             }
+
             await _context.SaveChangesAsync(cancellationToken);
         }
 
@@ -56,9 +60,9 @@ namespace StockTrader.Portfolios.Persistence
         {
             var snapshot = aggregate.TakeSnapshot();
             ApplyChanges(data, snapshot);
-            
+
             var events = aggregate.UncommittedEvents;
-            ApplyChanges(data, events); 
+            ApplyChanges(data, events);
         }
 
         private static void ApplyChanges(PortfolioData data, PortfolioSnapshot snapshot)
@@ -76,14 +80,14 @@ namespace StockTrader.Portfolios.Persistence
         {
             switch (domainEvent)
             {
-                case PortfolioOpened (var name):
+                case PortfolioOpened(var name):
                     data.Name = name;
                     break;
                 case SharesDebited(_, var remainingShares, var symbol):
                     var holding = data.Holdings.Single(h => h.Symbol == symbol);
                     holding.ShareCount = remainingShares;
                     break;
-                case OrderPlaced (var orderId, var details):
+                case OrderPlaced(var orderId, var details):
                     data.Orders.Add(new OrderData
                     {
                         Id = Guid.Parse(orderId),
@@ -91,7 +95,7 @@ namespace StockTrader.Portfolios.Persistence
                         Shares = details.Shares,
                         TradeType = details.TradeType,
                         OrderType = details.OrderType,
-                        PriceLimit = details.PriceLimit
+                        PriceLimit = details.PriceLimit,
                     });
                     break;
                 default: return;

@@ -13,7 +13,7 @@ namespace StockTrader.Portfolios.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -26,7 +26,7 @@ namespace StockTrader.Portfolios.Persistence.Migrations
                 {
                     PortfolioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Symbol = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ShareCount = table.Column<int>(type: "int", nullable: false)
+                    ShareCount = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -49,7 +49,7 @@ namespace StockTrader.Portfolios.Persistence.Migrations
                     Shares = table.Column<int>(type: "int", nullable: false),
                     TradeType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PriceLimit = table.Column<decimal>(type: "decimal(19,4)", nullable: true)
+                    PriceLimit = table.Column<decimal>(type: "decimal(19,4)", nullable: true),
                 },
                 constraints: table =>
                 {

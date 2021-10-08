@@ -9,10 +9,13 @@ namespace StockTrader.Portfolios.Domain.Internal
         private static readonly Regex Pattern =
             new(@"^[A-Z]{1,5}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public Symbol(string value) : base(value)
+        public Symbol(string value)
+            : base(value)
         {
             if (!Pattern.IsMatch(value))
+            {
                 throw new ArgumentException("Symbol must be an alpha string of 1 to 5 characters.");
+            }
         }
     }
 }

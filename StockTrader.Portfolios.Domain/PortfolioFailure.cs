@@ -3,8 +3,8 @@ using StockTrader.Shared.Domain;
 
 namespace StockTrader.Portfolios.Domain
 {
-    public abstract record PortfolioFailure(string Message) : PortfolioEvent,
-        IDomainFailure
+    public abstract record PortfolioFailure(string Message)
+        : PortfolioEvent, IDomainFailure
     {
         public static implicit operator DomainException(PortfolioFailure failure) =>
             new(failure.Message);

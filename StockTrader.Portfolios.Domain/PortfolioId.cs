@@ -1,5 +1,4 @@
-﻿using System;
-using StockTrader.Shared.Domain;
+﻿using StockTrader.Shared.Domain;
 
 namespace StockTrader.Portfolios.Domain
 {

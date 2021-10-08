@@ -3,6 +3,8 @@
     public record PortfolioAlreadyOpened : PortfolioFailure
     {
         public PortfolioAlreadyOpened()
-            : base("Portfolio already opened.") { }
+            : base("Portfolio already opened.")
+        {
+        }
     }
 }

@@ -18,7 +18,6 @@ namespace StockTrader.Shared.Application.Messaging
         {
             var aggregate = eventSource.Aggregate;
             return eventSource
-                .OfType<IDomainEvent>()
                 .Select(domainEvent => IntegrationEvent.Of(aggregate, domainEvent));
         }
     }

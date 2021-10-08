@@ -7,7 +7,7 @@ namespace StockTrader.Shared.Application.Messaging
     public interface IEventPublisher
     {
         Task Publish(
-            IEnumerable<IntegrationEvent> events, 
+            IEnumerable<IntegrationEvent> events,
             CancellationToken cancellationToken = default);
     }
 }

@@ -1,4 +1,6 @@
 ﻿namespace StockTrader.Shared.Domain
 {
-    public interface IDomainFailure : IDomainEvent { }
+    public interface IDomainFailure : IDomainEvent
+    {
+    }
 }

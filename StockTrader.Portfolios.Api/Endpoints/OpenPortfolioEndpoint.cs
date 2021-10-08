@@ -25,6 +25,6 @@ namespace StockTrader.Portfolios.Api.Endpoints
             return Accepted();
         }
     }
-    
+
     public record OpenPortfolioDto(string Name);
 }

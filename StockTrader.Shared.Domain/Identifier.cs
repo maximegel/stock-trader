@@ -4,12 +4,14 @@
         IIdentifier
         where TSelf : Identifier<TSelf, TValue>
     {
-        protected Identifier(TValue value) : 
-            base(value) { }
-        
+        protected Identifier(TValue value)
+            : base(value)
+        {
+        }
+
         public static implicit operator string(Identifier<TSelf, TValue> self) =>
             self.ToString();
-        
+
         public static explicit operator TValue(Identifier<TSelf, TValue> self) =>
             self.Value;
     }

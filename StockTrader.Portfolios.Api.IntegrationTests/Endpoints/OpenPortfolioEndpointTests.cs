@@ -18,7 +18,7 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Endpoints
             _testBed = TestBed.Create
                 .WithApiFactory(apiFactory)
                 .ForCommandOf<IPortfolio>();
-        
+
         [Fact]
         public async Task OpenPortfolio_WhenNotOpened_Opens()
         {

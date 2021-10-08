@@ -22,7 +22,7 @@ namespace StockTrader.Testing.Api.Internal
                 .WithWebHostBuilder(builder =>
                     builder.ConfigureServices(services =>
                     {
-                        services.Decorate<IRepository<TAggregate>>(spied => 
+                        services.Decorate<IRepository<TAggregate>>(spied =>
                             _repositorySpy = new RepositorySpy<TAggregate>(spied));
                     }));
             Client = _factory.CreateClient();

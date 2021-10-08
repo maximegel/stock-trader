@@ -28,7 +28,8 @@ namespace StockTrader.Portfolios.Domain.UnitTests.Commands
         {
             // Arrange
             var id = PortfolioId.Generate();
-            var portfolio = PortfolioFactory.LoadFromHistory(id,
+            var portfolio = PortfolioFactory.LoadFromHistory(
+                id,
                 new PortfolioOpened("Main"));
 
             // Act

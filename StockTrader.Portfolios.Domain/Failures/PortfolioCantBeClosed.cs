@@ -3,6 +3,8 @@
     public record PortfolioCantBeClosed : PortfolioFailure
     {
         public PortfolioCantBeClosed()
-            : base("Portfolio cannot be closed.") { }
+            : base("Portfolio cannot be closed.")
+        {
+        }
     }
 }

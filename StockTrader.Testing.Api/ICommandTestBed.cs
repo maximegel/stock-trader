@@ -9,6 +9,7 @@ namespace StockTrader.Testing.Api
         where TAggregate : IAggregateRoot
     {
         HttpClient Client { get; }
+
         IEnumerable<IDomainEvent> CommittedEvents { get; }
 
         Task Save(TAggregate aggregate);

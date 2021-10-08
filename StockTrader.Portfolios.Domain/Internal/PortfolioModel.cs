@@ -9,6 +9,7 @@
         }
 
         public Holdings Holdings { get; }
+
         public PortfolioStatus Status { get; }
     }
 }

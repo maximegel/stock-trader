@@ -22,11 +22,11 @@ namespace StockTrader.Testing.Api
             internal WithApiFactoryStep(WebApplicationFactory<TEntryPoint> apiFactory) =>
                 _apiFactory = apiFactory;
 
-            public ICommandTestBed<TAggregate> ForCommandOf<TAggregate>() 
+            public ICommandTestBed<TAggregate> ForCommandOf<TAggregate>()
                 where TAggregate : IAggregateRoot
             {
                 return new CommandTestBed<TEntryPoint, TAggregate>(_apiFactory);
             }
-        } 
+        }
     }
 }

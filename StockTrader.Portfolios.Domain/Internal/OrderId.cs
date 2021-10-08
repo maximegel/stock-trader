@@ -2,5 +2,7 @@
 
 namespace StockTrader.Portfolios.Domain.Internal
 {
-    internal class OrderId : Uuid<OrderId> { }
+    internal class OrderId : Uuid<OrderId>
+    {
+    }
 }

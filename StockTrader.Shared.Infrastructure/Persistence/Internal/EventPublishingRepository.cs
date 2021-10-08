@@ -6,12 +6,12 @@ using StockTrader.Shared.Domain;
 
 namespace StockTrader.Shared.Infrastructure.Persistence.Internal
 {
-    internal class EventPublishingRepository<TAggregate> : IRepository<TAggregate> 
+    internal class EventPublishingRepository<TAggregate> : IRepository<TAggregate>
         where TAggregate : IAggregateRoot, IEventSourced
     {
         private readonly IEventPublisher _eventPublisher;
         private readonly IRepository<TAggregate> _decorated;
-        
+
         public EventPublishingRepository(IEventPublisher eventPublisher, IRepository<TAggregate> decorated)
         {
             _eventPublisher = eventPublisher;

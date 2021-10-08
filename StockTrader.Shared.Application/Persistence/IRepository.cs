@@ -4,7 +4,8 @@ using StockTrader.Shared.Domain;
 
 namespace StockTrader.Shared.Application.Persistence
 {
-    public interface IRepository<TAggregate> where TAggregate : IAggregateRoot
+    public interface IRepository<TAggregate>
+        where TAggregate : IAggregateRoot
     {
         Task<TAggregate?> Find(IIdentifier id, CancellationToken cancellationToken = default);
 

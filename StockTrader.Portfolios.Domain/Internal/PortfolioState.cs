@@ -15,6 +15,7 @@ namespace StockTrader.Portfolios.Domain.Internal
         }
 
         public PortfolioStatus Status { get; }
+
         public Holdings Holdings { get; protected init; } = Holdings.Empty;
 
         public virtual PortfolioState Open() =>
@@ -33,7 +34,7 @@ namespace StockTrader.Portfolios.Domain.Internal
             {
                 Holdings = new Holdings(
                     snapshot.Holdings.Select(
-                        pair => new ShareCount(pair.Value, new Symbol(pair.Key))))
+                        pair => new ShareCount(pair.Value, new Symbol(pair.Key)))),
             };
         }
 
@@ -43,7 +44,7 @@ namespace StockTrader.Portfolios.Domain.Internal
             {
                 Holdings = Holdings.ToDictionary(
                     shares => shares.Symbol.ToString(),
-                    shares => (int)shares)
+                    shares => (int)shares),
             };
         }
 
@@ -55,6 +56,8 @@ namespace StockTrader.Portfolios.Domain.Internal
         where TSelf : PortfolioState<TSelf>, new()
     {
         protected PortfolioState()
-            : base(PortfolioStatus.For<TSelf>(), () => new TSelf()) { }
+            : base(PortfolioStatus.For<TSelf>(), () => new TSelf())
+        {
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace StockTrader.Shared.Infrastructure.Messaging.MediatR
             var tasks = events
                 .Select(integrationEvent => _mediator.Publish(integrationEvent, cancellationToken))
                 .ToArray();
-            
+
             return Task.WhenAll(tasks);
         }
     }

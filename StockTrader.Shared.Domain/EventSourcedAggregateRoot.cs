@@ -10,8 +10,11 @@ namespace StockTrader.Shared.Domain
     {
         private EventSource<TEvent> _uncommittedEvents;
 
-        protected EventSourcedAggregateRoot(TId id) : base(id) =>
+        protected EventSourcedAggregateRoot(TId id)
+            : base(id)
+        {
             _uncommittedEvents = new EventSource<TEvent>(this);
+        }
 
         IEventSource IEventSourced.UncommittedEvents =>
             _uncommittedEvents;
@@ -25,7 +28,7 @@ namespace StockTrader.Shared.Domain
         protected void Raise(params TEvent[] domainEvents) =>
             Raise(domainEvents.AsEnumerable());
 
-        protected void Raise(IEnumerable<TEvent> domainEvents) => 
+        protected void Raise(IEnumerable<TEvent> domainEvents) =>
             _uncommittedEvents = _uncommittedEvents.Append(domainEvents);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace StockTrader.Portfolios.Domain.Events
 {
-    public record SharesDebited(int DebitedShares, int RemainingShares, string Symbol) 
+    public record SharesDebited(int DebitedShares, int RemainingShares, string Symbol)
         : PortfolioEvent
     {
         internal override PortfolioState ApplyTo(PortfolioState portfolio)
