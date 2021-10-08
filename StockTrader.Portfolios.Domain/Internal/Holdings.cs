@@ -16,18 +16,11 @@ namespace StockTrader.Portfolios.Domain.Internal
 
         public static Holdings Empty { get; } = 
             new(ImmutableDictionary<Symbol, ShareCount>.Empty);
-        
-        public bool CanDebit(ShareCount shareCount)
-        {
-            var symbol = shareCount.Symbol;
-            var heldShares = CountOf(symbol);
-            return heldShares.CanDebit(shareCount);
-        }
 
         public ShareCount CountOf(Symbol symbol)
         {
-            return HoldSharesOf(symbol) 
-                ? _items[symbol] 
+            return HoldSharesOf(symbol)
+                ? _items[symbol]
                 : ShareCount.Zero(symbol);
         }
 

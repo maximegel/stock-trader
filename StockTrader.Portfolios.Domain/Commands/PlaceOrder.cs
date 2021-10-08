@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using StockTrader.Portfolios.Domain.Events;
 using StockTrader.Portfolios.Domain.Failures;
 using StockTrader.Portfolios.Domain.Internal;
@@ -14,38 +13,24 @@ namespace StockTrader.Portfolios.Domain.Commands
         internal override IEnumerable<PortfolioEvent> ExecuteOn(PortfolioModel portfolio)
         {
             if (portfolio.Status.Is<Closed>())
-            {
-                yield return new PortfolioCantBeClosed();
-                yield break;
-            }
-            
-            var symbol = new Symbol(Details.Symbol);
-            var shares = new ShareCount(Details.Shares, symbol);
-            var heldShares = portfolio.Holdings.CountOf(symbol);
+                return Yield(new PortfolioCantBeClosed());
 
-            switch (Details.TradeType)
-            {
-                case TradeType.Sell:
-                    if (portfolio.Holdings.CanDebit(shares))
-                    {
-                        var remainingShares = heldShares.Debit(shares);
-                        yield return new SharesDebited(shares, remainingShares, symbol);
-                    }
-                        
-                    else
-                    {
-                        yield return new InsufficientShares(heldShares, shares);
-                        yield break;
-                    }
-                    break;
-                case TradeType.Buy:
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
+            return Trade.OfType(Details.TradeType)
+                .WhenBuy(() => Yield(new OrderPlaced(OrderId.Generate(), Details)))
+                .WhenSell(() =>
+                {
+                    var symbol = new Symbol(Details.Symbol);
+                    var sellingShares = new ShareCount(Details.Shares, symbol);
+                    var heldShares = portfolio.Holdings.CountOf(symbol);
 
-            // TODO: Make order id predictable.
-            yield return new OrderPlaced(OrderId.Generate(), Details);
+                    if (heldShares < sellingShares)
+                        return Yield(new InsufficientShares(heldShares, sellingShares));
+                    
+                    var remainingShares = heldShares.Debit(sellingShares);
+                    return Yield(
+                        new SharesDebited(sellingShares, remainingShares, symbol),
+                        new OrderPlaced(OrderId.Generate(), Details));
+                });
         }
     }
 }
