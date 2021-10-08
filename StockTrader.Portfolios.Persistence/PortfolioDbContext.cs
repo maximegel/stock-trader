@@ -12,9 +12,9 @@ namespace StockTrader.Portfolios.Persistence
 
         internal DbSet<PortfolioData> Portfolios { get; init; } = null!;
 
-        protected override void OnModelCreating(ModelBuilder model)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            model.Entity<PortfolioData>(entity =>
+            modelBuilder.Entity<PortfolioData>(entity =>
             {
                 entity.ToTable("Portfolio");
                 entity.HasKey(e => e.Id);
@@ -23,13 +23,13 @@ namespace StockTrader.Portfolios.Persistence
                 entity.HasMany(e => e.Orders).WithOne(e => e.Portfolio).HasForeignKey(e => e.PortfolioId);
             });
 
-            model.Entity<HoldingData>(entity =>
+            modelBuilder.Entity<HoldingData>(entity =>
             {
                 entity.ToTable("Holding");
                 entity.HasKey(e => new { e.PortfolioId, e.Symbol });
             });
 
-            model.Entity<OrderData>(entity =>
+            modelBuilder.Entity<OrderData>(entity =>
             {
                 entity.ToTable("Order");
                 entity.HasKey(e => e.Id);

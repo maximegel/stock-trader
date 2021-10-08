@@ -38,33 +38,27 @@ namespace StockTrader.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // Application:
-            {
-                services.AddPortfoliosApplication();
-            }
+            services.AddPortfoliosApplication();
 
             // Infrastructure:
-            {
-                services.AddPortfoliosPersistence(Configuration.GetSection("Portfolios"));
-                services.AddInfrastructure();
-            }
+            services.AddPortfoliosPersistence(Configuration.GetSection("Portfolios"));
+            services.AddInfrastructure();
 
             // Api:
-            {
-                services
-                    .AddControllers()
-                    .AddPortfoliosControllers()
-                    .AddJsonOptions(options =>
-                    {
-                        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                    });
-
-                services.AddSwaggerGen(options =>
+            services
+                .AddControllers()
+                .AddPortfoliosControllers()
+                .AddJsonOptions(options =>
                 {
-                    options.SwaggerDoc(Version, new OpenApiInfo { Title = "StockTrader API", Version = Version });
-                    options.EnableAnnotations();
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 });
-            }
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc(Version, new OpenApiInfo { Title = "StockTrader API", Version = Version });
+                options.EnableAnnotations();
+            });
         }
     }
 }

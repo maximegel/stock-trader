@@ -18,11 +18,10 @@ namespace StockTrader.Shared.Domain
 
         public override bool Equals(object? obj) =>
             ReferenceEquals(this, obj) ||
-            (obj is not null && GetType() == obj.GetType() && Equals(obj as IEntity));
+            (obj is not null && GetType() == obj.GetType() &&
+             obj is IEntity other &&
+             Equals(other));
 
         public override int GetHashCode() => unchecked((13 * GetType().GetHashCode()) ^ Id.GetHashCode());
-
-        private bool Equals(IEntity? other) =>
-            Id.Equals(other?.Id);
     }
 }
