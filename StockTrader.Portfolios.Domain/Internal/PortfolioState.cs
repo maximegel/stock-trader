@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StockTrader.Portfolios.Domain.Internal
 {
     internal abstract record PortfolioState
     {
-        private static readonly ConcurrentDictionary<PortfolioStatus, Func<PortfolioState>> Factories = new();
+        private static readonly IReadOnlyDictionary<string, Func<PortfolioState>> Factories =
+            typeof(PortfolioState).Assembly
+                .GetTypes()
+                .Where(t => t.IsAssignableTo(typeof(PortfolioState)))
+                .Where(t => !t.IsAbstract)
+                .Where(t => t.IsAssignableTo(typeof(PortfolioState<>).MakeGenericType(t)))
+                .ToDictionary(
+                    t => t.Name,
+                    t => new Func<PortfolioState>(() => (PortfolioState)Activator.CreateInstance(t)!));
 
-        protected PortfolioState(PortfolioStatus status, Func<PortfolioState> factory)
-        {
+        protected PortfolioState(PortfolioStatus status) =>
             Status = status;
-            Factories.TryAdd(Status, factory);
-        }
 
         public PortfolioStatus Status { get; }
 
@@ -56,7 +62,7 @@ namespace StockTrader.Portfolios.Domain.Internal
         where TSelf : PortfolioState<TSelf>, new()
     {
         protected PortfolioState()
-            : base(PortfolioStatus.For<TSelf>(), () => new TSelf())
+            : base(PortfolioStatus.For<TSelf>())
         {
         }
     }
