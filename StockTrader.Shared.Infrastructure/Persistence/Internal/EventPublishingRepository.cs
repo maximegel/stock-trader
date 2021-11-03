@@ -6,15 +6,18 @@ using StockTrader.Shared.Domain;
 
 namespace StockTrader.Shared.Infrastructure.Persistence.Internal
 {
-    internal class EventPublishingRepository<TAggregate> : IRepository<TAggregate>
-        where TAggregate : IAggregateRoot, IEventSourced
+    internal class EventPublishingRepository<TAggregate, TEvent> : IRepository<TAggregate>
+        where TAggregate : IAggregateRoot, IEventSourced<TAggregate, TEvent>
+        where TEvent : class, IDomainEventDescriptor
     {
-        private readonly IEventPublisher _eventPublisher;
+        private readonly IEventPublisher<TEvent> _publisher;
         private readonly IRepository<TAggregate> _decorated;
 
-        public EventPublishingRepository(IEventPublisher eventPublisher, IRepository<TAggregate> decorated)
+        public EventPublishingRepository(
+            IEventPublisher<TEvent> publisher,
+            IRepository<TAggregate> decorated)
         {
-            _eventPublisher = eventPublisher;
+            _publisher = publisher;
             _decorated = decorated;
         }
 
@@ -25,9 +28,8 @@ namespace StockTrader.Shared.Infrastructure.Persistence.Internal
         {
             await _decorated.Save(aggregate, cancellationToken);
 
-            var integrationEvents = aggregate.UncommittedEvents.ToIntegrationEvents();
-            await _eventPublisher.Publish(integrationEvents, cancellationToken);
-            aggregate.ClearUncommittedEvents();
+            await _publisher.Publish(aggregate.UncommittedEvents, cancellationToken);
+            aggregate.MarkAsCommitted();
         }
     }
 }

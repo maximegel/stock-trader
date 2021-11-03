@@ -2,7 +2,8 @@
 
 namespace StockTrader.Shared.Domain
 {
-    public abstract class Entity<TId> : IEntity<TId>
+    public abstract class Entity<TSelf, TId> : IEntity<TId>
+        where TSelf : IEntity<TId>
         where TId : IIdentifier
     {
         protected Entity(TId id) =>
@@ -12,15 +13,17 @@ namespace StockTrader.Shared.Domain
 
         IIdentifier IEntity.Id => Id;
 
-        public static bool operator ==(Entity<TId>? left, Entity<TId>? right) => Equals(left, right);
+        public static bool operator ==(Entity<TSelf, TId>? left, Entity<TSelf, TId>? right) =>
+            Equals(left, right);
 
-        public static bool operator !=(Entity<TId>? left, Entity<TId>? right) => !(left == right);
+        public static bool operator !=(Entity<TSelf, TId>? left, Entity<TSelf, TId>? right) =>
+            !(left == right);
 
         public override bool Equals(object? obj) =>
             ReferenceEquals(this, obj) ||
             (obj is not null && GetType() == obj.GetType() &&
              obj is IEntity other &&
-             Equals(other));
+             Id.Equals(other.Id));
 
         public override int GetHashCode() => unchecked((13 * GetType().GetHashCode()) ^ Id.GetHashCode());
     }

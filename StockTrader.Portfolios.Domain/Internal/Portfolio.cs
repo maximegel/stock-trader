@@ -6,7 +6,8 @@ using StockTrader.Shared.Domain;
 
 namespace StockTrader.Portfolios.Domain.Internal
 {
-    internal class Portfolio : EventSourcedAggregateRoot<PortfolioId, PortfolioEvent>,
+    internal class Portfolio :
+        EventSourcedAggregateRoot<IPortfolio, PortfolioId, PortfolioEventDescriptor>,
         IPortfolio
     {
         private PortfolioState _state = new NotOpened();
@@ -24,11 +25,11 @@ namespace StockTrader.Portfolios.Domain.Internal
             {
                 var events = command.ExecuteOn(Model).ToArray();
                 (this as IPortfolio).Apply(events);
-                Raise(events);
+                Raise(events.Select(e => e.ToDescriptor(this, command)));
             }
             catch (Exception)
             {
-                Raise(new PortfolioFailedUnexpectedly());
+                Raise(new PortfolioFailedUnexpectedly().ToDescriptor(this, command));
             }
 
             return this;

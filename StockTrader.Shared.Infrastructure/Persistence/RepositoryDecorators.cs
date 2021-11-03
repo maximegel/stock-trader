@@ -7,12 +7,13 @@ namespace StockTrader.Shared.Infrastructure.Persistence
 {
     public static class RepositoryDecorators
     {
-        public static IRepository<TAggregate> UseImmediateEventPublisher<TAggregate>(
+        public static IRepository<TAggregate> UseImmediateEventPublisher<TAggregate, TEvent>(
             this IRepository<TAggregate> repository,
-            IEventPublisher eventPublisher)
-            where TAggregate : IAggregateRoot, IEventSourced
+            IEventPublisher<TEvent> publisher)
+            where TAggregate : IAggregateRoot, IEventSourced<TAggregate, TEvent>
+            where TEvent : class, IDomainEventDescriptor
         {
-            return new EventPublishingRepository<TAggregate>(eventPublisher, repository);
+            return new EventPublishingRepository<TAggregate, TEvent>(publisher, repository);
         }
     }
 }

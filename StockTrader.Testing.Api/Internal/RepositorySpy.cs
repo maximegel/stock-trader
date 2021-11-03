@@ -41,7 +41,7 @@ namespace StockTrader.Testing.Api.Internal
             !GetUncommittedEvents(aggregate).Any();
 
         private static IEnumerable<IDomainEvent> GetUncommittedEvents(TAggregate aggregate) =>
-            (aggregate as IEventSourced)?.UncommittedEvents.AsEnumerable() ??
+            (aggregate as IEventSourced<TAggregate>)?.UncommittedEvents.AsDomainEvents() ??
             Enumerable.Empty<IDomainEvent>();
     }
 }

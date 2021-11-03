@@ -4,8 +4,8 @@ namespace StockTrader.Portfolios.Domain
 {
     public interface IPortfolio :
         IAggregateRoot<PortfolioId>,
-        IEventSourced,
-        IEventAggregation<IPortfolio, PortfolioEvent>,
+        IEventSourced<IPortfolio, PortfolioEventDescriptor>,
+        IProjectable<IPortfolio, PortfolioEvent>,
         ISnapshotable<IPortfolio, PortfolioSnapshot>
     {
         IPortfolio Execute(PortfolioCommand command);

@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection services)
         {
             services.AddScoped<ICommandBus, MediatorCommandBus>();
-            services.AddScoped<IEventPublisher, MediatorEventPublisher>();
+            services.AddScoped(typeof(IEventPublisher<>), typeof(MediatorEventPublisher<>));
             return services;
         }
     }

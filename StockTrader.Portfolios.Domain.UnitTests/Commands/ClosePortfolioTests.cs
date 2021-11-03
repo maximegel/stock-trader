@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using StockTrader.Portfolios.Domain.Commands;
 using StockTrader.Portfolios.Domain.Events;
+using StockTrader.Shared.Domain;
 using Xunit;
 
 namespace StockTrader.Portfolios.Domain.UnitTests.Commands
@@ -37,7 +38,7 @@ namespace StockTrader.Portfolios.Domain.UnitTests.Commands
             portfolio.Execute(new ClosePortfolio(id));
 
             // Assert
-            portfolio.UncommittedEvents.Should().BeEquivalentTo(
+            portfolio.UncommittedEvents.AsDomainEvents().Should().BeEquivalentTo(
                 new[] { new PortfolioClosed() },
                 opt => opt.ComparingRecordsByValue());
         }

@@ -7,7 +7,8 @@ using StockTrader.Shared.Application.Messaging;
 
 namespace StockTrader.Shared.Infrastructure.Messaging.MediatR
 {
-    public class MediatorEventPublisher : IEventPublisher
+    public class MediatorEventPublisher<TEvent> : IEventPublisher<TEvent>
+        where TEvent : class
     {
         private readonly IMediator _mediator;
 
@@ -15,11 +16,11 @@ namespace StockTrader.Shared.Infrastructure.Messaging.MediatR
             _mediator = mediator;
 
         public Task Publish(
-            IEnumerable<IntegrationEvent> events,
+            IEnumerable<TEvent> events,
             CancellationToken cancellationToken = default)
         {
             var tasks = events
-                .Select(integrationEvent => _mediator.Publish(integrationEvent, cancellationToken))
+                .Select(e => _mediator.Publish(e, cancellationToken))
                 .ToArray();
 
             return Task.WhenAll(tasks);

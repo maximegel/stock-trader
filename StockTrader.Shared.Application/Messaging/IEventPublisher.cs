@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 
 namespace StockTrader.Shared.Application.Messaging
 {
-    public interface IEventPublisher
+    public interface IEventPublisher<in TEvent>
+        where TEvent : class
     {
         Task Publish(
-            IEnumerable<IntegrationEvent> events,
+            IEnumerable<TEvent> events,
             CancellationToken cancellationToken = default);
     }
 }

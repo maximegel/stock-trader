@@ -1,9 +1,9 @@
 ﻿namespace StockTrader.Shared.Domain
 {
-    public interface ISnapshotable<out TSelf, TSnapshot>
-        where TSelf : ISnapshotable<TSelf, TSnapshot>
+    public interface ISnapshotable<out TEntity, TSnapshot>
+        where TEntity : IEntity
     {
-        TSelf RestoreSnapshot(TSnapshot snapshot);
+        TEntity RestoreSnapshot(TSnapshot snapshot);
 
         TSnapshot TakeSnapshot();
     }

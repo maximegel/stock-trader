@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NodaTime;
 using StockTrader.Portfolios.Domain.Internal;
 using StockTrader.Shared.Domain;
 
@@ -10,6 +11,8 @@ namespace StockTrader.Portfolios.Domain
             AggregateId = aggregateId;
 
         public string AggregateId { get; }
+
+        public Instant Timestamp { get; init; } = SystemClock.Instance.GetCurrentInstant();
 
         internal abstract IEnumerable<PortfolioEvent> ExecuteOn(PortfolioModel portfolio);
 

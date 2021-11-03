@@ -2,6 +2,7 @@ using FluentAssertions;
 using StockTrader.Portfolios.Domain.Commands;
 using StockTrader.Portfolios.Domain.Events;
 using StockTrader.Portfolios.Domain.Failures;
+using StockTrader.Shared.Domain;
 using Xunit;
 
 namespace StockTrader.Portfolios.Domain.UnitTests.Commands
@@ -19,7 +20,7 @@ namespace StockTrader.Portfolios.Domain.UnitTests.Commands
             portfolio.Execute(new OpenPortfolio("Main"));
 
             // Assert
-            portfolio.UncommittedEvents.Should().BeEquivalentTo(
+            portfolio.UncommittedEvents.AsDomainEvents().Should().BeEquivalentTo(
                 new[] { new PortfolioOpened("Main") });
         }
 
@@ -36,7 +37,7 @@ namespace StockTrader.Portfolios.Domain.UnitTests.Commands
             portfolio.Execute(new OpenPortfolio("Main"));
 
             // Assert
-            portfolio.UncommittedEvents.Should().BeEquivalentTo(
+            portfolio.UncommittedEvents.AsDomainEvents().Should().BeEquivalentTo(
                 new[] { new PortfolioAlreadyOpened() },
                 opt => opt.ComparingRecordsByValue());
         }
