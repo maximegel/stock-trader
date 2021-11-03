@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace StockTrader.Portfolios.Persistence.DataModels
+namespace StockTrader.Portfolios.Persistence.Internal
 {
-    internal class HoldingData
+    internal record HoldingRecord
     {
         public Guid PortfolioId { get; init; }
 
@@ -10,6 +10,6 @@ namespace StockTrader.Portfolios.Persistence.DataModels
 
         public string Symbol { get; init; } = null!;
 
-        public PortfolioData Portfolio { get; init; } = null!;
+        public PortfolioRecord Portfolio { get; init; } = null!;
     }
 }

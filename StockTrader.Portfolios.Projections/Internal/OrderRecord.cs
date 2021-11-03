@@ -1,13 +1,15 @@
 ﻿using System;
 using StockTrader.Portfolios.Domain.Payloads;
 
-namespace StockTrader.Portfolios.Persistence.DataModels
+namespace StockTrader.Portfolios.Projections.Internal
 {
-    internal class OrderData
+    internal record OrderRecord
     {
         public Guid Id { get; init; }
 
         public Guid PortfolioId { get; init; }
+
+        public DateTime PlacedTime { get; init; }
 
         public string Symbol { get; init; } = null!;
 
@@ -18,7 +20,5 @@ namespace StockTrader.Portfolios.Persistence.DataModels
         public OrderType OrderType { get; init; }
 
         public decimal? PriceLimit { get; init; }
-
-        public PortfolioData Portfolio { get; init; } = null!;
     }
 }
