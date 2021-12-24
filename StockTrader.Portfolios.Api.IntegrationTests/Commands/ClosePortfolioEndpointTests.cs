@@ -1,42 +1,43 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FluentAssertions;
+using StockTrader.Api;
 using StockTrader.Portfolios.Domain;
 using StockTrader.Portfolios.Domain.Events;
-using StockTrader.Testing.Api;
+using StockTrader.Shared.Api.Testing;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace StockTrader.Portfolios.Api.IntegrationTests.Commands
 {
-    public class ClosePortfolioEndpointTests : IClassFixture<TestHostFactory>
+    public class ClosePortfolioEndpointTests : CommandEndpointTests<Startup, IPortfolio>
     {
-        private readonly ICommandTestBed<IPortfolio> _testBed;
-
-        public ClosePortfolioEndpointTests(TestHostFactory apiFactory) =>
-            _testBed = TestBed.Create
-                .WithApiFactory(apiFactory)
-                .ForCommandOf<IPortfolio>();
+        public ClosePortfolioEndpointTests(TestHostFactory factory, ITestOutputHelper output)
+            : base(factory, output)
+        {
+        }
 
         [Fact]
         public async Task ClosePortfolio_WhenOpened_Closes()
         {
             // Arrange
             var id = PortfolioId.Generate();
-            await _testBed.Save(
-                PortfolioFactory.LoadFromHistory(
-                    id,
-                    new PortfolioOpened("Main")));
+            var portfolio = PortfolioFactory.LoadFromHistory(
+                id,
+                new PortfolioOpened("Main"));
+            await Given(portfolio);
 
             // Act
-            var response = await _testBed.Client.PutAsync(
+            var response = await When(c => c.PutAsync(
                 $"/api/portfolio/{id}/close",
-                null!);
+                null!));
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.Accepted);
-            _testBed.CommittedEvents.Should().BeEquivalentTo(
-                new[] { new PortfolioClosed() },
-                opt => opt.ComparingRecordsByValue());
+            ThenCommittedEvents(response, events =>
+            {
+                events.Should().BeEquivalentTo(
+                    new[] { new PortfolioClosed() },
+                    opt => opt.ComparingRecordsByValue());
+            });
         }
     }
 }

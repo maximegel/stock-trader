@@ -2,7 +2,7 @@
 
 namespace StockTrader.Portfolios.Api.IntegrationTests
 {
-    [CollectionDefinition("TestHost")]
+    [CollectionDefinition("ApiTests")]
     public class TestHostCollectionFixture : ICollectionFixture<TestHostFactory>
     {
     }

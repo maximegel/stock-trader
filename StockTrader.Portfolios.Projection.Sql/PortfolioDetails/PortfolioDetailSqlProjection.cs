@@ -29,10 +29,15 @@ namespace StockTrader.Portfolios.Projection.Sql.PortfolioDetails
             string portfolioId,
             CancellationToken cancellationToken = default)
         {
-            var data = await _readContext.PortfolioDetails.FindAsync(
+            var found = await _readContext.PortfolioDetails.FindAsync(
                 new object[] { Guid.Parse(portfolioId) },
                 cancellationToken);
-            _readContext.PortfolioDetails.Remove(data);
+
+            if (found != null)
+            {
+                _readContext.PortfolioDetails.Remove(found);
+            }
+
             await _readContext.SaveChangesAsync(cancellationToken);
         }
     }

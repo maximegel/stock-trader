@@ -7,18 +7,16 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using StockTrader.Api;
 using StockTrader.Shared.Application.Messaging;
-using Xunit;
 using Xunit.Abstractions;
 
-namespace StockTrader.Portfolios.Api.IntegrationTests
+namespace StockTrader.Shared.Api.Testing
 {
-    [Collection("TestHost")]
-    public abstract class QueryEndpointTests : EndpointTests
+    public abstract class QueryEndpointTests<TEntryPoint> : EndpointTests<TEntryPoint>
+        where TEntryPoint : class
     {
         protected QueryEndpointTests(
-            WebApplicationFactory<Startup> factory,
+            WebApplicationFactory<TEntryPoint> factory,
             ITestOutputHelper output)
             : base(factory, output)
         {

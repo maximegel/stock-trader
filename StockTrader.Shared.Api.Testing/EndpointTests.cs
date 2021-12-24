@@ -4,24 +4,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using StockTrader.Api;
+using Xunit;
 using Xunit.Abstractions;
 
-namespace StockTrader.Portfolios.Api.IntegrationTests
+namespace StockTrader.Shared.Api.Testing
 {
-    public abstract class EndpointTests : IDisposable
+    [Collection("ApiTests")]
+    public abstract class EndpointTests<TEntryPoint> : IDisposable
+        where TEntryPoint : class
     {
-        private readonly WebApplicationFactory<Startup> _factory;
-        private readonly Lazy<IServiceScope> _scope;
         private readonly HttpClient _client;
+        private readonly WebApplicationFactory<TEntryPoint> _factory;
+        private readonly Lazy<IServiceScope> _scope;
 
         protected EndpointTests(
-            WebApplicationFactory<Startup> factory,
+            WebApplicationFactory<TEntryPoint> factory,
             ITestOutputHelper output)
         {
             _factory = factory.WithWebHostBuilder(host =>
-                host.ConfigureTestServices(services => { LoggingServiceCollectionExtensions.AddLogging(services, logging => XUnitLoggerExtensions.AddXUnit((ILoggingBuilder)logging, output)); }));
+                host.ConfigureTestServices(services =>
+                {
+                    //services.AddLogging(logging => logging.AddXUnit(output));
+                    ConfigureTestServices(services);
+                }));
             _scope = new Lazy<IServiceScope>(() => _factory.Services.CreateScope());
             _client = _factory.CreateClient();
         }
@@ -36,9 +41,11 @@ namespace StockTrader.Portfolios.Api.IntegrationTests
         }
 
         protected async Task<HttpResponseMessage> When(
-            Func<HttpClient, Task<HttpResponseMessage>> func)
+            Func<HttpClient, Task<HttpResponseMessage>> func) =>
+            await func(_client);
+
+        protected virtual void ConfigureTestServices(IServiceCollection services)
         {
-            return await func(_client);
         }
 
         protected virtual void Dispose(bool disposing)

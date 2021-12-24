@@ -1,16 +1,17 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FluentAssertions;
+using StockTrader.Api;
 using StockTrader.Portfolios.Application;
 using StockTrader.Portfolios.Domain;
 using StockTrader.Portfolios.Domain.Events;
 using StockTrader.Portfolios.Projection.PortfolioDetails;
+using StockTrader.Shared.Api.Testing;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace StockTrader.Portfolios.Api.IntegrationTests.Queries
 {
-    public class GetPortfolioDetailEndpointTests : QueryEndpointTests
+    public class GetPortfolioDetailEndpointTests : QueryEndpointTests<Startup>
     {
         public GetPortfolioDetailEndpointTests(TestHostFactory factory, ITestOutputHelper output)
             : base(factory, output)
@@ -22,9 +23,10 @@ namespace StockTrader.Portfolios.Api.IntegrationTests.Queries
         {
             // Arrange
             var id = PortfolioId.Generate();
-            await Given(PortfolioIntegrationEvent.CreateRange(
+            var events = PortfolioIntegrationEvent.CreateRange(
                 id,
-                new PortfolioOpened("Main")));
+                new PortfolioOpened("Main"));
+            await Given(events);
 
             // Act
             var response = await When(c => c.GetAsync($"/api/portfolio/{id}"));
