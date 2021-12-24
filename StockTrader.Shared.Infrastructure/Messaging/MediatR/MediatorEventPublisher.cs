@@ -7,8 +7,7 @@ using StockTrader.Shared.Application.Messaging;
 
 namespace StockTrader.Shared.Infrastructure.Messaging.MediatR
 {
-    public class MediatorEventPublisher<TEvent> : IEventPublisher<TEvent>
-        where TEvent : class
+    public class MediatorEventPublisher : IEventPublisher
     {
         private readonly IMediator _mediator;
 
@@ -16,7 +15,7 @@ namespace StockTrader.Shared.Infrastructure.Messaging.MediatR
             _mediator = mediator;
 
         public Task Publish(
-            IEnumerable<TEvent> events,
+            IEnumerable<object> events,
             CancellationToken cancellationToken = default)
         {
             var tasks = events

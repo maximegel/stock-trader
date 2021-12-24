@@ -5,7 +5,7 @@ using StockTrader.Shared.Application.Messaging;
 
 namespace StockTrader.Shared.Infrastructure.Messaging.Internal
 {
-    internal class UpgradingEventPublisher<TSource, TDestination> : IEventPublisher<TSource>
+    internal class UpgradingEventPublisher<TSource, TDestination> : EventPublisher<TSource>
         where TSource : class
         where TDestination : class
     {
@@ -20,7 +20,7 @@ namespace StockTrader.Shared.Infrastructure.Messaging.Internal
             _decorated = decorated;
         }
 
-        public async Task Publish(
+        protected override async Task Publish(
             IEnumerable<TSource> events,
             CancellationToken cancellationToken = default)
         {

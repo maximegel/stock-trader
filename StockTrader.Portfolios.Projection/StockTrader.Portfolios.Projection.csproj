@@ -5,12 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\StockTrader.Portfolios.Application\StockTrader.Portfolios.Application.csproj" />
       <ProjectReference Include="..\StockTrader.Shared.Application\StockTrader.Shared.Application.csproj" />
-      <ProjectReference Include="..\StockTrader.Portfolios.Domain\StockTrader.Portfolios.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="System.Linq.Async.Queryable" Version="5.1.0" />
     </ItemGroup>
 
 </Project>

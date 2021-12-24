@@ -8,8 +8,9 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddInfrastructure(
             this IServiceCollection services)
         {
-            services.AddScoped<ICommandBus, MediatorCommandBus>();
-            services.AddScoped(typeof(IEventPublisher<>), typeof(MediatorEventPublisher<>));
+            services.AddScoped<ICommandBus, MediatorBus>();
+            services.AddScoped<IQueryBus, MediatorBus>();
+            services.AddScoped<IEventPublisher, MediatorEventPublisher>();
             return services;
         }
     }

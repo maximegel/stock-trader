@@ -14,6 +14,7 @@
       <ProjectReference Include="..\StockTrader.Portfolios.Application.DependencyInjection\StockTrader.Portfolios.Application.DependencyInjection.csproj" />
       <ProjectReference Include="..\StockTrader.Portfolios.Persistence.DependencyInjection\StockTrader.Portfolios.Persistence.DependencyInjection.csproj" />
       <ProjectReference Include="..\StockTrader.Portfolios.Persistence\StockTrader.Portfolios.Persistence.csproj" />
+      <ProjectReference Include="..\StockTrader.Portfolios.Projection.Sql.DependencyInjection\StockTrader.Portfolios.Projection.Sql.DependencyInjection.csproj" />
       <ProjectReference Include="..\StockTrader.Shared.Infrastructure.DependencyInjection\StockTrader.Shared.Infrastructure.DependencyInjection.csproj" />
     </ItemGroup>
 

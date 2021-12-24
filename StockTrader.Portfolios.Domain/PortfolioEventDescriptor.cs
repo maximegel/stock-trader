@@ -1,4 +1,5 @@
-﻿using StockTrader.Shared.Domain;
+﻿using NodaTime;
+using StockTrader.Shared.Domain;
 
 namespace StockTrader.Portfolios.Domain
 {
@@ -9,5 +10,14 @@ namespace StockTrader.Portfolios.Domain
         DomainEventDescriptor<PortfolioEvent, PortfolioEventMetadata>(
             AggregateId,
             Data,
-            Metadata);
+            Metadata)
+    {
+        public PortfolioEventDescriptor(PortfolioId aggregateId, PortfolioEvent data)
+            : this(
+                aggregateId.ToString(),
+                data,
+                new PortfolioEventMetadata(SystemClock.Instance.GetCurrentInstant()))
+        {
+        }
+    }
 }

@@ -16,13 +16,14 @@ namespace Microsoft.Extensions.DependencyInjection
             IConfiguration configuration)
         {
             services.AddScoped(provider =>
-                new PortfolioDbRepository(provider.GetRequiredService<PortfoliosWriteDbContext>())
+                new PortfolioSqlRepository(provider.GetRequiredService<PortfoliosSqlWriteContext>())
                     .UseImmediateEventPublisher(
-                        provider.GetRequiredService<IEventPublisher<PortfolioIntegrationEvent>>()
-                            .UseUpgrader((PortfolioEventDescriptor e) => PortfolioIntegrationEvent.From(e))));
+                        provider.GetRequiredService<IEventPublisher>()
+                            .OfEventType<PortfolioIntegrationEvent>()
+                            .UseUpgrader((PortfolioEventDescriptor e) => PortfolioIntegrationEvent.Create(e))));
 
-            services.AddDbContext<PortfoliosWriteDbContext>(options =>
-                PortfoliosWriteDbContextFactory.Configure(options, configuration));
+            services.AddDbContext<PortfoliosSqlWriteContext>(options =>
+                PortfoliosSqlWriteContextFactory.Configure(options, configuration));
 
             return services;
         }

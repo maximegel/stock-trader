@@ -42,6 +42,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{9882
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTrader.Portfolios.Domain.UnitTests", "StockTrader.Portfolios.Domain.UnitTests\StockTrader.Portfolios.Domain.UnitTests.csproj", "{4507CDDD-FE44-4C4D-A36A-56834F22832C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTrader.Portfolios.Projection.Sql", "StockTrader.Portfolios.Projection.Sql\StockTrader.Portfolios.Projection.Sql.csproj", "{2616FE69-4E6C-4470-91BF-4BCA8B3B3AAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTrader.Portfolios.Projection.Sql.DependencyInjection", "StockTrader.Portfolios.Projection.Sql.DependencyInjection\StockTrader.Portfolios.Projection.Sql.DependencyInjection.csproj", "{26DDC1B0-BAEB-42E4-8653-44FE6C5DE043}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTrader.Portfolios.Projection.Sql.Migrations", "StockTrader.Portfolios.Projection.Sql.Migrations\StockTrader.Portfolios.Projection.Sql.Migrations.csproj", "{4EDEAEA4-E5A1-420F-925B-49FEE17009F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTrader.Portfolios.Projection", "StockTrader.Portfolios.Projection\StockTrader.Portfolios.Projection.csproj", "{79F27A2B-1F96-4956-A548-2B3B73BA6534}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +120,22 @@ Global
 		{4507CDDD-FE44-4C4D-A36A-56834F22832C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4507CDDD-FE44-4C4D-A36A-56834F22832C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4507CDDD-FE44-4C4D-A36A-56834F22832C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2616FE69-4E6C-4470-91BF-4BCA8B3B3AAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2616FE69-4E6C-4470-91BF-4BCA8B3B3AAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2616FE69-4E6C-4470-91BF-4BCA8B3B3AAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2616FE69-4E6C-4470-91BF-4BCA8B3B3AAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26DDC1B0-BAEB-42E4-8653-44FE6C5DE043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26DDC1B0-BAEB-42E4-8653-44FE6C5DE043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26DDC1B0-BAEB-42E4-8653-44FE6C5DE043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26DDC1B0-BAEB-42E4-8653-44FE6C5DE043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EDEAEA4-E5A1-420F-925B-49FEE17009F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EDEAEA4-E5A1-420F-925B-49FEE17009F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EDEAEA4-E5A1-420F-925B-49FEE17009F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EDEAEA4-E5A1-420F-925B-49FEE17009F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F27A2B-1F96-4956-A548-2B3B73BA6534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F27A2B-1F96-4956-A548-2B3B73BA6534}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F27A2B-1F96-4956-A548-2B3B73BA6534}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F27A2B-1F96-4956-A548-2B3B73BA6534}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{28660E5A-47E5-4C68-A463-7634149085A7} = {A3374C70-175E-486D-ABBF-1F382754F16A}
@@ -133,5 +157,9 @@ Global
 		{98824AB3-9138-49DD-B1DA-2B7DA37DC785} = {E64A37F6-8038-4385-A3BD-C9073F06FB57}
 		{E70D1B5F-5A97-4181-BDFD-8EE88284A366} = {98824AB3-9138-49DD-B1DA-2B7DA37DC785}
 		{4507CDDD-FE44-4C4D-A36A-56834F22832C} = {3712C8AD-8C3B-46BE-9C46-CA70B413AC43}
+		{2616FE69-4E6C-4470-91BF-4BCA8B3B3AAC} = {3712C8AD-8C3B-46BE-9C46-CA70B413AC43}
+		{26DDC1B0-BAEB-42E4-8653-44FE6C5DE043} = {3712C8AD-8C3B-46BE-9C46-CA70B413AC43}
+		{4EDEAEA4-E5A1-420F-925B-49FEE17009F0} = {3712C8AD-8C3B-46BE-9C46-CA70B413AC43}
+		{79F27A2B-1F96-4956-A548-2B3B73BA6534} = {3712C8AD-8C3B-46BE-9C46-CA70B413AC43}
 	EndGlobalSection
 EndGlobal
