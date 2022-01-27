@@ -1,0 +1,59 @@
+// Development container configuration,
+// see https://code.visualstudio.com/docs/remote/devcontainerjson-reference
+{
+  "name": "K8s",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "BAZELISK_VERSION": "1.10.1",
+      "BAZELISK_DOWNLOAD_SHA": "4cb534c52cdd47a6223d4596d530e7c9c785438ab3b0a49ff347e991c210b2cd",
+      "BUILDIFIER_VERSION": "4.2.4",
+      "BUILDIFIER_DOWNLOAD_SHA": "8db84f817301ca90705c8be8dd0b7fd1591b2f9d05d4ece77fc587214a974b1a",
+      "TILT_VERSION": "0.23.5",
+      "TILT_DOWNLOAD_SHA": "dcfd2ba7aadbe66a11dcfb071ba083ec1c6b7ebd3c792c502383b94d0a2132e4",
+      "CTPLT_VERSION": "0.7.0",
+      "CTPLT_DOWNLOAD_SHA": "30a349ef9423ad8b39d8703d5e56f1e52ace48e094cf0051505ba3c386ecd8fd"
+    }
+  },
+  "mounts": [
+    "source=minikube-var-lib-docker,target=/var/lib/docker,type=volume",
+    "source=minikube-config,target=/home/vscode/.minikube,type=volume",
+  ],
+  "runArgs": [
+    "--privileged"
+    // Uncomment when using a ptrace-based debugger like C++, Go, and Rust. */
+    // "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"
+  ],
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [],
+  // Minikube does not like running as root, so use a non-root user.
+  "remoteUser": "vscode",
+  "overrideCommand": false,
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "bazelbuild.vscode-bazel",
+    "ms-azuretools.vscode-docker",
+    "ms-kubernetes-tools.vscode-kubernetes-tools"
+  ],
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "files.associations": {
+      ".bazelrc": "shellscript",
+      "Tiltfile": "starlark"
+    },
+    "files.exclude": {
+      "bazel-*": true
+    },
+    "bazel.buildifierExecutable": "/usr/local/bin/buildifier",
+    "bazel.buildifierFixOnFormat": true,
+    "bazel.enableCodeLens": true,
+    "bazel.executable": "/usr/local/bin/bazel",
+    "material-icon-theme.files.associations": {
+      "devcluster.yaml": "tilt",
+      "WORKSPACE": "bazel"
+    },
+    "redhat.telemetry.enabled": false,
+  },
+  "postCreateCommand": "bash ./.devcontainer/lifecycle-scripts/post-create.sh",
+  "postStartCommand": "bash ./.devcontainer/lifecycle-scripts/post-start.sh",
+}
