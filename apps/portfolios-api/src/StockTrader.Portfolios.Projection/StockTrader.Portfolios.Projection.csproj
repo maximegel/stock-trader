@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\StockTrader.Portfolios.Application\StockTrader.Portfolios.Application.csproj" />
+      <ProjectReference Include="..\StockTrader.Shared.Application\StockTrader.Shared.Application.csproj" />
+    </ItemGroup>
+
+</Project>

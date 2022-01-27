@@ -10,7 +10,7 @@ services:
         SA_PASSWORD: 'Your_password123'
         ACCEPT_EULA: 'Y'
     volumes:
-      - db_volume:/var/opt/mssql/data
+      - db-data:/var/opt/mssql/data
 
 volumes:
-  db_volume:
+  db-data:

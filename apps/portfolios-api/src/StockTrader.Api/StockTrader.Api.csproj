@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\StockTrader.Portfolios.Api.DependencyInjection\StockTrader.Portfolios.Api.DependencyInjection.csproj" />
+      <ProjectReference Include="..\StockTrader.Portfolios.Api\StockTrader.Portfolios.Api.csproj" />
+      <ProjectReference Include="..\StockTrader.Portfolios.Application.DependencyInjection\StockTrader.Portfolios.Application.DependencyInjection.csproj" />
+      <ProjectReference Include="..\StockTrader.Portfolios.Persistence.DependencyInjection\StockTrader.Portfolios.Persistence.DependencyInjection.csproj" />
+      <ProjectReference Include="..\StockTrader.Portfolios.Persistence\StockTrader.Portfolios.Persistence.csproj" />
+      <ProjectReference Include="..\StockTrader.Portfolios.Projection.Sql.DependencyInjection\StockTrader.Portfolios.Projection.Sql.DependencyInjection.csproj" />
+      <ProjectReference Include="..\StockTrader.Shared.Infrastructure.DependencyInjection\StockTrader.Shared.Infrastructure.DependencyInjection.csproj" />
+    </ItemGroup>
+
+</Project>
