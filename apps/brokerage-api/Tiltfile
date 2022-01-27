@@ -1,0 +1,29 @@
+"Tilt configuration, see https://docs.tilt.dev/api.html"
+
+load("../../tools/tilt/bazel.tilt", "bazel_k8s_yaml", "bazel_test")
+load("../../tools/tilt/bazel/go.tilt", "bazel_build_go")
+
+def brokerage_api(host_port):
+    """Configures Tilt ressources for brokerage-api.
+
+    Args:
+        host_port: The Host port.
+    """
+
+    project = "brokerage-api"
+    package = "//apps/" + project
+
+    bazel_k8s_yaml(package + ":deploy")
+    bazel_build_go(ref = project, target = package + ":image")
+    k8s_resource(
+        workload = project,
+        new_name = "app: " + project,
+        port_forwards = host_port,
+        labels = [project],
+    )
+
+    bazel_test(
+        name = "test(units): " + project,
+        target = package + ":units",
+        labels = [project],
+    )

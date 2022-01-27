@@ -1,0 +1,13 @@
+"Tilt functions for resolving Bazel files."
+
+def _is_internal(label):
+    return (not label.startswith("//external/") or
+            not label.startswith("//external:"))
+
+def bazel_file(label):
+    if not _is_internal(label):
+        fail("Label cannot be external: %s" % label)
+    return label.replace(":", "/").strip("/")
+
+def bazel_files(labels):
+    return [bazel_file(label) for label in labels if _is_internal(label)]

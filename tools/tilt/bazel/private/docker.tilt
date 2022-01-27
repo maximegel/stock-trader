@@ -1,0 +1,5 @@
+"Tilt functions for resolving Bazel images."
+
+def bazel_image(target):
+    # Bazel puts the image at bazel/{dirname}.
+    return target.replace("//", "bazel/")

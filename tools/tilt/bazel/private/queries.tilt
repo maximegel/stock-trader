@@ -1,0 +1,43 @@
+"Tilt functions for querying Bazel targets."
+
+load("./files.tilt", "bazel_files")
+
+def bazel_query(query):
+    """Executes a dependency graph query.
+
+    See https://docs.bazel.build/versions/main/command-line-reference.html#query
+    """
+    output = local(["bazel", "query", "--order_output=no", query])
+    return str(output).splitlines()
+
+def bazel_build_deps(target):
+    return bazel_query('filter("^//", buildfiles(deps(set(%s))))' % target)
+
+def bazel_build_files(target):
+    labels = bazel_build_deps(target)
+    return bazel_files(labels)
+
+def bazel_source_deps(target):
+    return bazel_query(
+        'filter("^//", kind("source file", deps(set(%s))))' % target,
+    )
+
+def bazel_source_files(target):
+    labels = bazel_source_deps(target)
+    return bazel_files(labels)
+
+def bazel_aquery(target):
+    """Analyzes the given target and queries the action graph.
+
+    See https://docs.bazel.build/versions/main/command-line-reference.html#aquery
+    """
+    output = local([
+        "bazel",
+        "aquery",
+        "--output=jsonproto",
+        # Needed for compatibility with Bazel 3 and 4,
+        # see https://github.com/bazelbuild/bazel/issues/10358.
+        "--noincompatible_proto_output_v2",
+        target,
+    ], quiet = True)
+    return decode_json(output)

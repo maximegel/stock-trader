@@ -1,0 +1,17 @@
+"Tilt functions for Bazel."
+
+load(
+    "./bazel/private/build.tilt",
+    _bazel_build = "bazel_build",
+    _bazel_build_with_restart = "bazel_build_with_restart",
+)
+load("./bazel/private/k8s.tilt", _bazel_k8s_yaml = "bazel_k8s_yaml")
+load("./bazel/private/test.tilt", _bazel_test = "bazel_test")
+
+bazel_build = _bazel_build
+
+bazel_build_with_restart = _bazel_build_with_restart
+
+bazel_k8s_yaml = _bazel_k8s_yaml
+
+bazel_test = _bazel_test

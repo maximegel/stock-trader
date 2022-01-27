@@ -1,0 +1,41 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+load("@io_bazel_rules_docker//go:image.bzl", "go_image")
+load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
+
+package(default_visibility = ["//visibility:public"])
+
+go_library(
+    name = "library",
+    srcs = glob(
+        ["src/**/*.go"],
+        exclude = ["src/**/*_test.go"],
+    ),
+    importpath = "github.com/maximegel/stock-trader/brokerage-api",
+    visibility = ["//visibility:private"],
+    deps = [],
+)
+
+go_test(
+    name = "units",
+    srcs = glob(["src/**/*_test.go"]),
+    embed = [":library"],
+)
+
+go_binary(
+    name = "binary",
+    embed = [":library"],
+)
+
+go_image(
+    name = "image",
+    base = "@go_image_base//image",
+    embed = [":library"],
+    goarch = "amd64",
+    goos = "linux",
+    pure = "on",
+)
+
+k8s_deploy(
+    name = "deploy",
+    template = ".k8s/deployment.yaml",
+)

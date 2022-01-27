@@ -1,0 +1,10 @@
+apiVersion: ctlptl.dev/v1alpha1
+kind: Registry
+name: minikube-registry
+port: 5000
+---
+apiVersion: ctlptl.dev/v1alpha1
+kind: Cluster
+product: minikube
+registry: minikube-registry
+kubernetesVersion: v1.18.8

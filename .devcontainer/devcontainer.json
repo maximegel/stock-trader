@@ -6,13 +6,12 @@
     "dockerfile": "Dockerfile",
     "args": {
       "BAZELISK_VERSION": "1.10.1",
-      "BAZELISK_DOWNLOAD_SHA": "4cb534c52cdd47a6223d4596d530e7c9c785438ab3b0a49ff347e991c210b2cd",
       "BUILDIFIER_VERSION": "4.2.4",
-      "BUILDIFIER_DOWNLOAD_SHA": "8db84f817301ca90705c8be8dd0b7fd1591b2f9d05d4ece77fc587214a974b1a",
+      "CTLPTL_VERSION": "0.7.0",
+      "HELM_VERSION": "latest",
+      "KUBECTL_VERSION": "latest",
+      "MINIKUBE_VERSION": "1.24.0",
       "TILT_VERSION": "0.23.5",
-      "TILT_DOWNLOAD_SHA": "dcfd2ba7aadbe66a11dcfb071ba083ec1c6b7ebd3c792c502383b94d0a2132e4",
-      "CTPLT_VERSION": "0.7.0",
-      "CTPLT_DOWNLOAD_SHA": "30a349ef9423ad8b39d8703d5e56f1e52ace48e094cf0051505ba3c386ecd8fd"
     }
   },
   "mounts": [
@@ -32,28 +31,35 @@
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
     "bazelbuild.vscode-bazel",
+    "eamodio.gitlens",
+    "editorconfig.editorconfig",
+    "golang.go",
+    "mhutchie.git-graph",
     "ms-azuretools.vscode-docker",
-    "ms-kubernetes-tools.vscode-kubernetes-tools"
+    "ms-kubernetes-tools.vscode-kubernetes-tools",
+    "pkief.material-icon-theme",
+    "tilt-dev.tilt-status",
   ],
   // Set *default* container specific settings.json values on container create.
   "settings": {
     "files.associations": {
-      ".bazelrc": "shellscript",
+      "*.tilt": "starlark",
       "Tiltfile": "starlark"
     },
-    "files.exclude": {
-      "bazel-*": true
-    },
+    "terminal.integrated.defaultProfile.linux": "zsh",
     "bazel.buildifierExecutable": "/usr/local/bin/buildifier",
-    "bazel.buildifierFixOnFormat": true,
-    "bazel.enableCodeLens": true,
     "bazel.executable": "/usr/local/bin/bazel",
     "material-icon-theme.files.associations": {
+      "*.tilt": "tilt",
       "devcluster.yaml": "tilt",
       "WORKSPACE": "bazel"
     },
-    "redhat.telemetry.enabled": false,
+    "material-icon-theme.folders.associations": {
+      ".k8s": "kubernetes",
+      "docker": false,
+      "k8s": false
+    },
   },
-  "postCreateCommand": "bash ./.devcontainer/lifecycle-scripts/post-create.sh",
-  "postStartCommand": "bash ./.devcontainer/lifecycle-scripts/post-start.sh",
+  "postCreateCommand": "zsh ./.devcontainer/lifecycle-scripts/post-create.sh",
+  "postStartCommand": "zsh ./.devcontainer/lifecycle-scripts/post-start.sh",
 }

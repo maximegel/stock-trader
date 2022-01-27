@@ -1,0 +1,16 @@
+"Tilt functions for Docker."
+
+def image_inspect(image):
+    """Returns detailed information about the given image.
+
+    See https://docs.docker.com/engine/reference/commandline/image_inspect
+    """
+    output = local(["docker", "image", "inspect", image], quiet = True)
+    json = decode_json(output)
+    return json[0]
+
+def image_workdir(image_info):
+    return image_info["Config"]["WorkingDir"]
+
+def image_entrypoints(image_info):
+    return image_info["Config"]["Entrypoint"]

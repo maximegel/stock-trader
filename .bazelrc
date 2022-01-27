@@ -1,0 +1,4 @@
+# Bazel configuration,
+# see https://docs.bazel.build/versions/main/guide.html#bazelrc-the-bazel-configuration-filer
+
+test --test_output=errors

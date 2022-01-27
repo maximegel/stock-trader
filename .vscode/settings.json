@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        ".bazelrc": "shellscript",
+    },
+    "files.exclude": {
+        "bazel-*": true
+    },
+    "bazel.buildifierFixOnFormat": true,
+    "bazel.enableCodeLens": true,
+    "redhat.telemetry.enabled": false
+}

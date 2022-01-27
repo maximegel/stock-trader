@@ -1,0 +1,29 @@
+"Tilt functions for building containers with Bazel."
+
+load("ext://restart_process", "custom_build_with_restart")
+load("../../core.tilt", "watch_files")
+load("./docker.tilt", "bazel_image")
+load("./queries.tilt", "bazel_build_files", "bazel_source_files")
+
+def _bazel_build_image_cmd(target):
+    cmd = ("bazel run {target} -- --norun " +
+           "&& docker tag {bazel_image} $EXPECTED_REF")
+    return cmd.format(bazel_image = bazel_image(target), target = target)
+
+def bazel_build(ref, target):
+    watch_files(bazel_build_files(target))
+    custom_build(
+        command = _bazel_build_image_cmd(target),
+        ref = ref,
+        deps = bazel_source_files(target),
+    )
+
+def bazel_build_with_restart(ref, target, entrypoint, live_update, deps = []):
+    watch_files(bazel_build_files(target))
+    custom_build_with_restart(
+        command = _bazel_build_image_cmd(target),
+        entrypoint = entrypoint,
+        live_update = live_update,
+        ref = ref,
+        deps = bazel_source_files(target) + deps,
+    )

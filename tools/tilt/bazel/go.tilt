@@ -1,0 +1,5 @@
+"Tilt functions for Bazel packages developped in Go."
+
+load("./go/private/build.tilt", _bazel_build_go = "bazel_build_go")
+
+bazel_build_go = _bazel_build_go

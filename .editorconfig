@@ -1,3 +1,39 @@
+# Editor configuration, see http://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+### Bazel ###
+
+[WORKSPACE]
+indent_size = 4
+
+[*.bazel]
+indent_size = 4
+
+[*.bzl]
+indent_size = 4
+
+### Docker ###
+
+[Dockerfile]
+indent_size = 4
+
+### Tilt ###
+
+[Tiltfile]
+indent_size = 4
+
+[*.tilt]
+indent_size = 4
+
+### .NET ###
+
 # XML project files
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
 indent_size = 2
@@ -38,7 +74,7 @@ dotnet_diagnostic.SA1200.severity = None
 dotnet_diagnostic.SA1309.severity = None
 
 # [SA1313] Parameter should begin with lower-case letter
-# XXX: Disabled until full records support. 
+# XXX: Disabled until full records support.
 dotnet_diagnostic.SA1313.severity = None
 
 ## Maintainability Rules (SA1400-) ##
