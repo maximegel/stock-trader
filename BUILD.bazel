@@ -1,6 +1,15 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
+load("@io_bazel_rules_go//go:def.bzl", "go_path")
 
 package(default_visibility = ["//visibility:public"])
 
 # gazelle:prefix github.com/maximegel/stock-trader
 gazelle(name = "gazelle")
+
+go_path(
+    name = "gopath",
+    mode = "link",
+    deps = [
+        "//apps/brokerage-api:binary",
+    ],
+)
