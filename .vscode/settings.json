@@ -1,21 +1,22 @@
 {
   "files.associations": {
     ".bazelrc": "shellscript",
+    "*.tilt": "starlark",
+    "Tiltfile": "starlark"
   },
   "files.exclude": {
-    "bazel-*": true
+    "bazel-*": false
   },
+  /** Bazel */
   "bazel.buildifierFixOnFormat": true,
   "bazel.enableCodeLens": true,
-  "go.gopath": "/workspaces/stock-trader/bazel-bin/gopath",
-  "go.goroot": "/workspaces/stock-trader/bazel-stock-trader/external/go_sdk",
-  "go.toolsEnvVars": {
-    "GOPACKAGESDRIVER": "/workspaces/stock-trader/tools/bazel/go/gopackagesdriver.sh"
-  },
-  "go.enableCodeLens": {
-    "references": false,
-    "runtest": false
-  },
+  "bazel.queriesShareServer": true,
+  /** Go */
+  "go.buildOnSave": "off",
+  "go.lintOnSave": "off",
+  "go.vetOnSave": "off",
+  "go.testExplorer.enable": false,
+  "go.useLanguageServer": true,
   "gopls": {
     "build.directoryFilters": [
       "-bazel-bin",
@@ -23,23 +24,24 @@
       "-bazel-testlogs",
       "-bazel-stock-trader",
     ],
-    "formatting.gofumpt": true,
     "formatting.local": "github.com/maximegel/stock-trader",
-    "ui.completion.usePlaceholders": true,
-    "ui.semanticTokens": true,
+    "formatting.gofumpt": true,
     "ui.codelenses": {
       "gc_details": false,
-      "regenerate_cgo": false,
       "generate": false,
-      "test": false,
+      "regenerate_cgo": false,
+      "test": true,
       "tidy": false,
       "upgrade_dependency": false,
       "vendor": false
     },
+    "ui.semanticTokens": true,
+    "ui.completion.usePlaceholders": true,
   },
-  "go.useLanguageServer": true,
-  "go.buildOnSave": "off",
-  "go.lintOnSave": "off",
-  "go.vetOnSave": "off",
+  /** C# */
+  "omnisharp.useModernNet": true,
+  "omnisharp.enableRoslynAnalyzers": true,
+  "omnisharp.organizeImportsOnFormat": true,
+  /** YAML */
   "redhat.telemetry.enabled": false,
 }

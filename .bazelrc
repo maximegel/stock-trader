@@ -2,3 +2,7 @@
 # see https://docs.bazel.build/versions/main/guide.html#bazelrc-the-bazel-configuration-filer
 
 test --test_output=errors
+
+build \
+  --host_platform=@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_6.0.101 \
+  --platforms=@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_6.0.101
