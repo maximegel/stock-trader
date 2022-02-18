@@ -1,0 +1,68 @@
+load(
+    "@io_bazel_rules_dotnet//dotnet:defs.bzl",
+    "csharp_binary",
+    "csharp_xunit_test",
+)
+load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
+load("//tools/bazel/docker/dotnet:defs.bzl", "dotnet_image")
+
+package(default_visibility = ["//visibility:public"])
+
+dotnet_image(
+    name = "image",
+    base = "@aspnet_base//image",
+    binary = ":binary",
+    entrypoint = [
+        "dotnet",
+        "StockTrader.Portfolios.Api.dll",
+    ],
+)
+
+alias(
+    name = "unit_tests",
+    actual = ":StockTrader.Portfolios.Api.Tests.dll",
+)
+
+k8s_deploy(
+    name = "deploy",
+    template = ".k8s/deployment.yaml",
+)
+
+alias(
+    name = "binary",
+    actual = ":StockTrader.Portfolios.Api.dll",
+    visibility = ["//visibility:private"],
+)
+
+csharp_binary(
+    name = "StockTrader.Portfolios.Api.dll",
+    srcs = glob(["src/StockTrader.Portfolios.Api/**/*.cs"]),
+    data = glob([
+        "src/StockTrader.Portfolios.Api/appsettings*.json",
+        "src/StockTrader.Portfolios.Api/bin/**/*.deps.json",
+        "src/StockTrader.Portfolios.Api/bin/**/*.pdb",
+        "src/StockTrader.Portfolios.Api/bin/**/*.runtimeconfig.json",
+    ]),
+    nowarn = ["CS8632"],
+    visibility = ["//visibility:private"],
+    deps = [
+        "@core_sdk_stdlib//:Microsoft.AspNetCore.App",
+        "@core_sdk_stdlib//:libraryset",
+        "@swashbuckle.aspnetcore//:lib",
+    ],
+)
+
+csharp_xunit_test(
+    name = "StockTrader.Portfolios.Api.Tests.dll",
+    srcs = glob(["src/StockTrader.Portfolios.Api.Tests/**/*.cs"]),
+    nowarn = ["CS1701"],
+    visibility = ["//visibility:private"],
+    deps = [
+        "@core_sdk_stdlib//:Microsoft.AspNetCore.App",
+        "@core_sdk_stdlib//:libraryset",
+        "@coverlet.collector//:lib",
+        "@microsoft.net.test.sdk//:lib",
+        "@xunit.runner.visualstudio//:lib",
+        "@xunit//:lib",
+    ],
+)

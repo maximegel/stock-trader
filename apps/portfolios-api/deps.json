@@ -1,0 +1,22 @@
+﻿{
+  "externals": {},
+  "dependencies": {
+    "Microsoft.Extensions.ApiDescription.Server": "3.0.0",
+    "Microsoft.OpenApi": "1.2.3",
+    "Swashbuckle.AspNetCore.Swagger": "6.2.3",
+    "Swashbuckle.AspNetCore.SwaggerGen": "6.2.3",
+    "Swashbuckle.AspNetCore.SwaggerUI": "6.2.3",
+    "Swashbuckle.AspNetCore": "6.2.3",
+    "Microsoft.CodeCoverage": "16.11.0",
+    "Microsoft.NET.Test.Sdk": "16.11.0",
+    "xunit.abstractions": "2.0.3",
+    "xunit.analyzers": "0.10.0",
+    "xunit.assert": "2.4.1",
+    "xunit.extensibility.core": "2.4.1",
+    "xunit.extensibility.execution": "2.4.1",
+    "xunit.core": "2.4.1",
+    "xunit": "2.4.1",
+    "xunit.runner.visualstudio": "2.4.3",
+    "coverlet.collector": "3.1.0"
+  }
+}

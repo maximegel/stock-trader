@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolios-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portfolios-api
+  template:
+    metadata:
+      labels:
+        app: portfolios-api
+    spec:
+      containers:
+        - name: portfolios-api
+          image: portfolios-api
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"

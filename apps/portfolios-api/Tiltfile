@@ -1,20 +1,20 @@
 "Tilt configuration, see https://docs.tilt.dev/api.html"
 
 load("../../tools/tilt/bazel.tilt", "bazel_k8s_yaml", "bazel_test")
-load("../../tools/tilt/bazel/go.tilt", "bazel_build_go")
+load("../../tools/tilt/bazel/dotnet.tilt", "bazel_build_dotnet")
 
-def brokerage_api(host_port):
-    """Configures Tilt ressources for brokerage-api.
+def portfolios_api(host_port):
+    """Configures Tilt ressources for portfolios-api.
 
     Args:
         host_port: The Host port.
     """
 
-    project = "brokerage-api"
+    project = "portfolios-api"
     package = "//apps/" + project
 
     bazel_k8s_yaml(package + ":deploy")
-    bazel_build_go(ref = project, target = package + ":image")
+    bazel_build_dotnet(ref = project, target = package + ":image")
     k8s_resource(
         workload = project,
         port_forwards = host_port,
@@ -23,6 +23,6 @@ def brokerage_api(host_port):
 
     bazel_test(
         name = project + ":unit_tests",
-        target = package + ":unit_tests",
+        target = package + ":StockTrader.Portfolios.Api.Tests.dll",
         labels = [project],
     )
