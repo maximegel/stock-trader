@@ -1,7 +1,7 @@
 "Tilt functions for generating Kubernetes YAML with Bazel."
 
 load("../../core.tilt", "watch_files")
-load("./queries.tilt", "bazel_build_files", "bazel_source_files")
+load("./files.tilt", "bazel_build_files", "bazel_source_files")
 
 def bazel_k8s_yaml(target):
     "Uses Bazel to generate the Kubernetes YAML of the given target."

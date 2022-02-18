@@ -12,5 +12,5 @@ def image_inspect(image):
 def image_workdir(image_info):
     return image_info["Config"]["WorkingDir"]
 
-def image_entrypoints(image_info):
+def image_entrypoint(image_info):
     return image_info["Config"]["Entrypoint"]

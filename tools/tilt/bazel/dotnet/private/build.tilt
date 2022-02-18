@@ -1,0 +1,59 @@
+"Tilt functions for building .NET images with Bazel."
+
+load("../../private/action_graph.tilt", "bazel_exec_paths")
+load("../../private/build.tilt", "bazel_build_with_restart")
+load("../../private/query.tilt", "bazel_aquery")
+
+def _tar_path(tar_target):
+    action_graph = bazel_aquery(tar_target)
+    return bazel_exec_paths(
+        action_graph,
+        lambda a: a["mnemonic"] == "PackageTar",
+    )[0]
+
+def _tar_args(args, name):
+    prefix = "--" + name + "="
+    return [arg[len(prefix):] for arg in args if arg.startswith(prefix)]
+
+def _read_tar(path):
+    args_path = path.replace(".tar", ".args")
+    args_blob = read_file(args_path)
+    args = str(args_blob).splitlines()
+    directory = _tar_args(args, "directory")[0]
+    manifest_path = _tar_args(args, "manifest")[0]
+    manifest_json = read_json(manifest_path)
+    return [
+        (entry[2], os.path.join(directory, entry[1]))
+        for entry in manifest_json
+    ]
+
+def _build_tar(target):
+    local(["bazel", "run", target, "--", "--norun"])
+
+def bazel_build_dotnet(ref, target):
+    """Build a Bazel .NET image with live updates.
+
+    Args:
+        ref: A name for the image.
+
+            If the image will be used in a k8s
+            resource(s), this ref must match the spec.container.image param for
+            that resource(s).
+        target: The label of the Bazel image target.
+    """
+    _build_tar(target)
+    tar_target = target + ".pkg"
+    tar_path = _tar_path(tar_target)
+    tar_files = _read_tar(tar_path)
+    bazel_build_with_restart(
+        live_update = [
+            sync(local_path, container_path)
+            for (local_path, container_path) in tar_files
+        ],
+        ref = ref,
+        target = target,
+        deps = [
+            local_path
+            for (local_path, _) in tar_files
+        ],
+    )

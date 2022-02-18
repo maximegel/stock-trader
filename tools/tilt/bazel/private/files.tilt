@@ -1,5 +1,7 @@
 "Tilt functions for resolving Bazel files."
 
+load("./query.tilt", "bazel_build_deps", "bazel_source_deps")
+
 def _is_internal(label):
     return (not label.startswith("//external/") or
             not label.startswith("//external:"))
@@ -11,3 +13,11 @@ def bazel_file(label):
 
 def bazel_files(labels):
     return [bazel_file(label) for label in labels if _is_internal(label)]
+
+def bazel_build_files(target):
+    labels = bazel_build_deps(target)
+    return bazel_files(labels)
+
+def bazel_source_files(target):
+    labels = bazel_source_deps(target)
+    return bazel_files(labels)

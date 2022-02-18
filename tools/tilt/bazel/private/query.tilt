@@ -1,7 +1,5 @@
 "Tilt functions for querying Bazel targets."
 
-load("./files.tilt", "bazel_files")
-
 def bazel_query(query):
     """Executes a dependency graph query.
 
@@ -13,18 +11,10 @@ def bazel_query(query):
 def bazel_build_deps(target):
     return bazel_query('filter("^//", buildfiles(deps(set(%s))))' % target)
 
-def bazel_build_files(target):
-    labels = bazel_build_deps(target)
-    return bazel_files(labels)
-
 def bazel_source_deps(target):
     return bazel_query(
         'filter("^//", kind("source file", deps(set(%s))))' % target,
     )
-
-def bazel_source_files(target):
-    labels = bazel_source_deps(target)
-    return bazel_files(labels)
 
 def bazel_aquery(target):
     """Analyzes the given target and queries the action graph.

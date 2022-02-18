@@ -1,31 +1,10 @@
-"Tilt functions for building Go containers with Bazel."
+"Tilt functions for building Go images with Bazel."
 
-load("../../../docker.tilt", "image_entrypoints", "image_inspect")
+load("../../../docker.tilt", "image_entrypoint", "image_inspect")
+load("../../private/action_graph.tilt", "bazel_exec_paths")
 load("../../private/build.tilt", "bazel_build_with_restart")
 load("../../private/docker.tilt", "bazel_image")
-load("../../private/queries.tilt", "bazel_aquery")
-
-def _link_actions(action_graph):
-    # If the image target is a Go binary, it will have a GoLink action.
-    return [
-        action
-        for action in action_graph["actions"]
-        if action["mnemonic"] == "GoLink"
-    ]
-
-def _action_output_ids(action_graph):
-    return [
-        output_id
-        for action in _link_actions(action_graph)
-        for output_id in action["outputIds"]
-    ]
-
-def _exec_paths(action_graph):
-    return [
-        action["execPath"]
-        for action in action_graph["artifacts"]
-        if action["id"] in _action_output_ids(action_graph)
-    ]
+load("../../private/query.tilt", "bazel_aquery")
 
 def _local_binary(target):
     # Query Bazel's action graph and parse the response.
@@ -34,26 +13,39 @@ def _local_binary(target):
     # Bazel can affect the path.
     # See https://github.com/bazelbuild/rules_go/blob/dea7cd1/README.rst#how-do-i-access-go_binary-executables-from-go_test
     action_graph = bazel_aquery(target)
-    exec_paths = _exec_paths(action_graph)
+    exec_paths = bazel_exec_paths(
+        action_graph,
+        # If the image target is a Go binary, it will have a GoLink action.
+        lambda a: a["mnemonic"] == "GoLink",
+    )
     return exec_paths[0]
 
 def _container_binary(target):
     # Inspect Go image to determine the binary location in the container.
     # This can also be determined by shelling into the container with
     # `kubectl exec -it [pod name] -- sh`.
-    container_info = image_inspect(bazel_image(target))
-    return image_entrypoints(container_info)[0]
+    image_info = image_inspect(bazel_image(target))
+    return image_entrypoint(image_info)[0]
 
 def bazel_build_go(ref, target):
+    """Build a Bazel Go image with live updates.
+
+    Args:
+        ref: A name for the image.
+
+            If the image will be used in a k8s
+            resource(s), this ref must match the spec.container.image param for
+            that resource(s).
+        target: The label of the Bazel image target.
+    """
     binary_target = target + ".binary"
-    binary_local_path = _local_binary(binary_target)
-    binary_container_path = _container_binary(target)
+    local_path = _local_binary(binary_target)
+    container_path = _container_binary(target)
     bazel_build_with_restart(
-        entrypoint = binary_container_path,
         live_update = [
-            sync(binary_local_path, binary_container_path),
+            sync(local_path, container_path),
         ],
         ref = ref,
         target = target,
-        deps = [binary_local_path],
+        deps = [local_path],
     )

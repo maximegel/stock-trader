@@ -1,7 +1,7 @@
 "Tilt core utility functions."
 
 def watch_files(file_paths):
-    """Watches a list of files.
+    """Watches multiple files.
 
     If a file is changed a re-exectution of the Tiltfile is triggered.
     If a path is a directory, its contents will be recursively watched.

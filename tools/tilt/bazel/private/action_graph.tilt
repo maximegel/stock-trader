@@ -1,0 +1,22 @@
+"Tilt functions for querying Bazel action graph."
+
+def _actions(action_graph, predicate):
+    return [
+        action
+        for action in action_graph["actions"]
+        if predicate(action)
+    ]
+
+def _output_ids(action_graph, predicate):
+    return [
+        output_id
+        for action in _actions(action_graph, predicate)
+        for output_id in action["outputIds"]
+    ]
+
+def bazel_exec_paths(action_graph, action_predicate):
+    return [
+        artifact["execPath"]
+        for artifact in action_graph["artifacts"]
+        if artifact["id"] in _output_ids(action_graph, action_predicate)
+    ]

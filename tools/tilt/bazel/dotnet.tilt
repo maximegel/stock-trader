@@ -1,0 +1,5 @@
+"Tilt functions for Bazel packages developped in .NET."
+
+load("./dotnet/private/build.tilt", _bazel_build_dotnet = "bazel_build_dotnet")
+
+bazel_build_dotnet = _bazel_build_dotnet

@@ -1,7 +1,7 @@
 "Tilt functions for running tests with Bazel."
 
 load("../../core.tilt", "watch_files")
-load("./queries.tilt", "bazel_build_files", "bazel_source_files")
+load("./files.tilt", "bazel_build_files", "bazel_source_files")
 
 def bazel_test(name, target, labels = []):
     watch_files(bazel_build_files(target))
